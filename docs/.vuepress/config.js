@@ -1,6 +1,6 @@
 ﻿const utils = require('./utils')
 
-console.log(JSON.stringify(utils.inferSiderbars()));
+console.log(">>> start vue pressing... ");
 
 module.exports = {
   title: 'Paradise VuePress',
@@ -17,7 +17,7 @@ module.exports = {
       },
       {
         text: '语雀',
-        link: '/yueque/'
+        link: 'https://www.yuque.com/paradise'
       },
       {
         text: '生活',
@@ -28,18 +28,19 @@ module.exports = {
         link: '/jk/'
       },
       {
-        text: 'GitHub',
+        text: 'Tools',
         items: [
-          { text : 'Github首页1', link: '/1/'},
-          { text : 'Github首页2', link: '/2/'},
-          { text : 'Github首页3', link: '/3/'},
+          { text : 'ProcessOn', link: 'https://www.processon.com/view/5ce2125de4b00446dc6b133b'},
+          { text : '幕布', link: 'https://mubu.com/doc/bU5zO0Fos6'},
+          { text : '滴答清单', link: 'https://dida365.com/#q/all/tasks'},
+          { text : '极客时间', link: 'https://account.geekbang.org/dashboard/buy'},
         ]
       }
     ],
     sidebar: utils.inferSiderbars(),
     // lastUpdated: 'Last update',
-    // repo: 'xiumu2017/github.xiumu2017.io',
-    // editLinks: true,
+    repo: 'xiumu2017/github.xiumu2017.io',
+    editLinks: true,
     // docsDir: 'docs',
     // editLinkText: 'edit in GitHub',
     sidebarDepth: 3
