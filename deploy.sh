@@ -12,6 +12,9 @@ cd docs/.vuepress/dist
 # 如果是发布到自定义域名
 # echo 'www.example.com' > CNAME
 
+# 创建.nojekyll 防止Github Pages build错误
+touch .nojekyll
+
 git init
 git add -A
 git commit -m 'deploy'
