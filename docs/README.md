@@ -1,8 +1,8 @@
 ---
 home: true
 heroImage: /image/Heart Rate.png
-tagline: Hello,Welcome to Paradise
-actionText: Start explore
+tagline: Hello,Welcome to ParadiseVuePress
+actionText: Open Paradise YuQue Space
 actionLink: https://www.yuque.com/paradise
 features:
 - title: 语雀
@@ -13,3 +13,13 @@ features:
   details: 世上无难事，只怕有心人。
 footer: MIT Licensed | Copyright © 2019-5-23 Paradise
 ---
+
+:::tip
+最近在做什么
+
+- 深入拆解Tomcat & Netty [·](https://www.bing.com)
+- 系统性回顾Java学习
+- 整理博客，文档，梳理计划
+- ...
+
+:::
