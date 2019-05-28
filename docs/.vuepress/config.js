@@ -39,7 +39,7 @@ module.exports = {
     ],
     sidebar: utils.inferSiderbars(),
     // lastUpdated: 'Last update',
-    repo: 'xiumu2017/github.xiumu2017.io',
+    repo: 'xiumu2017',
     editLinks: true,
     // docsDir: 'docs',
     // editLinkText: 'edit in GitHub',

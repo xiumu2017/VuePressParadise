@@ -1,0 +1,9 @@
+[[toc]]
+
+## Paradise Navigation
+
+### 语雀 - 知识库
+[Paradise 语雀](https://www.yuque.com/paradise)
+
+### 掘金 - 个人主页
+[Paradise 掘金](https://juejin.im/user/5a97d2426fb9a028c149e324)
