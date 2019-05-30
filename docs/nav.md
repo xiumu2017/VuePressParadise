@@ -7,3 +7,9 @@
 
 ### 掘金 - 个人主页
 [Paradise 掘金](https://juejin.im/user/5a97d2426fb9a028c149e324)
+
+### Leet-Code
+[LeetCode](https://leetcode-cn.com/u/paradis3/)
+
+### 牛客网
+[牛客网](https://www.nowcoder.com/profile/2741870)
