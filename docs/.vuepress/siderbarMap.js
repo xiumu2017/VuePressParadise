@@ -4,8 +4,8 @@ const siderbarMap = [
         dirName:'yuque/'
     },
     {
-        title:'极客时间',
-        dirName:'jk/'
+        title:'Java',
+        dirName:'java/'
     },
     {
         title:'生活',
