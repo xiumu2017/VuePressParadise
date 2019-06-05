@@ -24,8 +24,8 @@ module.exports = {
         link: '/life/'
       },
       {
-        text: '极客时间',
-        link: '/jk/'
+        text: 'Java',
+        link: '/java/'
       },
       {
         text: 'Tools',
@@ -43,7 +43,7 @@ module.exports = {
     editLinks: true,
     // docsDir: 'docs',
     // editLinkText: 'edit in GitHub',
-    sidebarDepth: 3
+    sidebarDepth: 2
   },
   ga: 'UA-109340118-1',
   markdown: {
