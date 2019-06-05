@@ -1,8 +1,13 @@
 ﻿const utils = require('./utils')
 
 console.log(">>> start vue pressing... ");
+// console.log(JSON.stringify(utils.inferSiderbars()));
 
 module.exports = {
+  host: '0.0.0.0', // 指定 dev server 的主机名
+  port: '8888', // 指定 dev server 的端口
+  // dest: '.vuepress/dist', // 指定vuepress build 的目录
+  // ga: 'UA-109340118-1', // 提供一个 Google Analytics ID 来使 GA 生效。
   title: 'Paradise VuePress',
   description: 'Paradise Blog By VuePress',
   head: [
@@ -38,14 +43,15 @@ module.exports = {
       }
     ],
     sidebar: utils.inferSiderbars(),
-    // lastUpdated: 'Last update',
-    repo: 'xiumu2017',
+    lastUpdated: 'Last Updated', // string | boolean
+    repo: 'xiumu2017/VuePressParadise',
+    repoLabel: 'GitHub',
+    docsDir: 'docs',
     editLinks: true,
-    // docsDir: 'docs',
-    // editLinkText: 'edit in GitHub',
-    sidebarDepth: 2
+    editLinkText: '帮助我完善此页面内容！',
+    sidebarDepth: 1,
+    displayAllHeaders: true // 默认值：false
   },
-  ga: 'UA-109340118-1',
   markdown: {
     lineNumbers: true,
     config: md => {
