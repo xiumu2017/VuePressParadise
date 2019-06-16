@@ -1,7 +1,7 @@
 ---
 home: true
-heroImage: /image/Heart Rate.png
-tagline: Hello,Welcome!
+heroImage: /image/g1.gif
+tagline: 菩提本无树，明镜亦非台。
 actionText: Start Explore
 actionLink: /nav
 features:
