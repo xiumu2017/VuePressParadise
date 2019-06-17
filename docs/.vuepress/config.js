@@ -8,7 +8,7 @@ module.exports = {
   port: '8888', // 指定 dev server 的端口
   // dest: '.vuepress/dist', // 指定vuepress build 的目录
   // ga: 'UA-109340118-1', // 提供一个 Google Analytics ID 来使 GA 生效。
-  title: ' ',
+  title: 'Paradise VuePress',
   description: 'Paradise Blog By VuePress',
   head: [
     // 增加一个自定义的favicon

@@ -19,3 +19,10 @@
 ### 牛客网
 
 [牛客网](https://www.nowcoder.com/profile/2741870)
+
+### 博客评论功能 DISQUS
+
+[DISQUS](https://disqus.com/)
+可惜的是需要科学上网，加载速度太慢
+
+<disqus/>
