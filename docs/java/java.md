@@ -1,13 +1,335 @@
-# Java 学习路径 for Paradise
+# Java程序员面试宝典
 
-针对目前的个人情况，基础不牢固，缺乏系统性的学习；
+[[toc]]
 
-## 主要任务
+## Java基础知识 - OOP
 
-1. 快速把 《Java 编程思想》 过一遍
-2. 整理记录读书笔记
-3. 实践，编码
+Java语言是一门高级语言，帮助开发人员快速解决现实问题，实现各种业务场景，而不需要精通计算机的内部特性，跨平台，提供了很多类库，面向对象，...
 
-## 计划
+抽象机制  
+面向现实的问题，业务实现
 
-Java程序员面试宝典
+### 1. Java语言有哪些优点？你对Java语言的理解？
+
+1. 应用广泛，常年霸榜，生态丰富而完善。
+2. Java为纯面向对象的语言，这里需要拓展对OOP的理解。
+3. 平台无关性，跨平台，JVM虚拟机。
+4. 丰富的内置类库，多线程，集合，网络编程等。
+5. 其它：对web开发的支持，良好的安全性和健壮性，GC机制等。
+
+解释执行与编译执行？
+逐条解释，编译执行；全部编译执行；热点代码动态编译。
+
+**OOP**
+封装，继承，多态；  
+万物皆对象，描述属性与行为，和面向过程区分；除了基本类型，都是对象。
+
+### 2. public static void main （String[] args）
+
+- 入口方法，JVM运行时，首先查找 `main()` 方法。  
+- public 权限修饰符，表示任何类或对象都可以访问这个方法。  
+- static 表明这是一个静态方法，即方法中的代码是存储在静态存储区的，只要类被加载（类加载器）后，既可以使用该方法而不需要实例化对象。  
+- String[] args 表明这是一个字符串数组参数，为开发人员在命令行状态下与程序交互提供了一种手段。  
+- public 与 static 没有先后顺序关系
+- final，synchronized 修饰方法也可以，但是不能用 abstract 关键字修饰
+
+### 3. 实现在main()方法执行之前输出“Hello”
+
+静态块在类加载时就会被调用，并且位置顺序无关。
+
+```java
+public class Paradise {
+    static {
+        System.out.println("----");
+    }
+
+    public static void main(String[] args) {
+        System.out.println(">>>");
+    }
+
+}
+```
+
+### 4. Java程序初始化的顺序是怎样的？
+
+1. 静态优先
+2. 父类优先
+3. 按照成员变量的定义顺序进行初始化
+
+```java
+public class OrderBase {
+    static {
+        System.out.println("Father static block - 父类静态代码块");
+    }
+
+    {
+        System.out.println("Father - 父类代码块");
+    }
+
+    public OrderBase() {
+        System.out.println("Father constructor - 父类构造方法");
+    }
+
+    public static void main(String[] args) {
+        System.out.println("main fun - main方法执行");
+        OrderChild orderChild = new OrderChild();
+    }
+
+}
+
+public class OrderChild extends OrderBase {
+
+    static {
+        System.out.println("Child static block - 子类静态代码块");
+    }
+
+    {
+        System.out.println("Child block - 子类代码块1");
+    }
+
+    public OrderChild() {
+        System.out.println("Child constructor - 子类构造方法");
+    }
+
+
+    {
+        System.out.println("Child block - 子类代码块2");
+    }
+
+}
+```
+
+```
+把main方法放在父类中，输出结果：
+Father static block - 父类静态代码块
+main fun - main方法执行
+Child static block - 子类静态代码块
+Father - 父类代码块
+Father constructor - 父类构造方法
+Child block - 子类代码块1
+Child block - 子类代码块2
+Child constructor - 子类构造方法
+```
+
+执行顺序：父类静态代码块 ->  子类静态代码块 -> 父类代码块 -> 父类构造方法 -> 子类代码块 -> 子类构造方法 -> ...
+
+### 5. Java中的作用域有哪些？
+
+1. 成员变量，作用范围与实例化对象的作用范围相同
+2. 静态变量，static修饰，被所有实例共享
+3. 局部变量，仅限在所在当前{}内
+
+修饰符 public private(仅限当前类) protected(当前package) default
+
+### 6. 一个Java文件是否可以定义多个类？
+
+当然可以，但是最多只能有1个类被public修饰，并且这个类名与文件名必须相同。
+
+### 7. 什么是构造函数？
+
+是一种特殊的函数，用来在对象实例化时初始化对象的成员变量。
+和`new`关键字紧密相关，只能由系统调用。*那通过反射呢？*
+
+当父类没有提供无参数的构造函数时，子类的构造函数中必须通过`super`关键字显式地调用父类的构造函数，并且位置在最前面。
+
+### 8. 为什么Java中有些接口没有任何方法
+
+什么是接口，我的理解是，提供一个抽象的类，约定了一组默认的行为，把某一类对象的通用行为提取出来作为标准。
+
+接口是抽象方法定义的集合（接口中也可以定义一些常量值），是一种特殊的抽象类。  
+接口中只包含方法的定义，没有方法的实现。接口中成员的作用域修饰符都是public，常量默认值使用 `public static final`修饰。用一个类实现多个接口间接实现多重继承。  
+*什么是抽象类？*  
+
+有些接口内部没有声明任何方法，称为标识接口，表明实现它的类属于一个特定的类型。比如`Cloneable` `Serializable`。使用`instanceof`判断实例对象的类型是否实现了一个给定的标识接口。
+
+### 9. Java中的clone方法有什么作用
+
+深拷贝与浅拷贝  
+
+`clone`方法解决的是，想要创建两个属性一致的对象，如果使用`new`和`=`关键字得到的只是一个引用，指向的还是同一个对象。clone则会创建一个新的对象，分配新的内存空间。
+
+### 10. 什么是反射机制
+
+非常重要的特性，得到一个对象所属的类；获取一个类的所有成员变量和方法；在运行时创建对象；在运行时调用对象的方法。
+
+- Class.forName("");
+- 类名.class
+- 实例.getClass();
+
+### 11. Java创建对象的方式有几种？
+
+1. 通过new语句实例化一个对象
+2. 通过反射机制创建对象
+3. 通过clone()方法创建一个对象
+4. 通过反序列化的方式创建对象
+
+### 12. package有什么作用
+
+1. 提供多层命名空间，类名可以重复
+2. 组织分类，使项目的组织更加清晰
+
+### 13. 回调函数
+
+策略设计模式  
+定义一个接口，在接口中声明要调用的方法，多种实现。接口作为方法的入参，调用这个方法时根据不同的需求传递不同的实现类实例，实现不同的逻辑。
+
+
+### 14. 多态的实现机制
+ 多态：同一操作作用在不同对象时，会有不同的语义，从而产生不同的结果。  
+1. 重载 overload，编译时多态，一个类中的方法多态性。
+2. 覆盖 override 子类覆盖父类的方法；运行时多态。`@Override` 注解标记
+
+同一个类中不能存在同名且参数列表完全相同的方法；
+重载是通过参数列表来区分的。  
+
+覆盖，方法名，参数列表，返回值，抛出异常类型必须全部一致。
+
+### 15. 抽象类 abstract class 和 接口 interface
+
+抽象类：包含抽象方法的类叫做抽象类。抽象方法，仅有声明而没有方法体，`abstract void f();`，相当于C++中的纯虚函数。如果一个类中包含一个或多个抽象方法，该类必须被限定为**抽象**的。
+
+一个接口表示：所有实现了该接口的类看起来都像这样。
+
+### 16. 内部类
+
+1. 静态内部类 static inner class
+2. 成员内部类 member inner class
+3. 局部内部类 local inner class
+4. 匿名内部类 anonymous inner class
+
+### 17. 获取父类的类名？
+
+`getClass()`方法在Object类中被定义为`final` `native`，子类不能覆盖该方法，返回此Object的运行时类；
+
+通过反射 `getClass().getSuperclass().getName();`
+
+### 18. this & super
+
+this用来指向当前实例对象，它的一个非常重要的作用就是用来区分对象的成员变量与方法的形参（当一个方法的形参与成员变量重名是，会覆盖成员变量）；
+
+super用来访问父类的方法或者成员变量，尤其当子类的方法或者成员变量与父类重名覆盖时。
+
+## Java基础知识 - 关键字
+
+### 1. 变量命名规则
+
+a~z,A~Z,0-9,_,$  
+标识符的第一个字符为字母，下划线，美元符号
+
+### 2. break & continue & return
+
+- `break` 跳出当前循环  
+- `continue` 停止当次循环  
+- `return` 跳转语句，方法返回  
+
+break跳出多重循环，使用标识符加冒号的形式定义标签（`label:`,`break label;`）
+
+### 3. final & finally & finalize
+
+1. `final`
+  - 属性：不可变，指引用不可变；被`final`修饰的变量必须被初始化；
+  - 方法：不可覆盖，不允许任何子类重写这个方法；  
+  - 类：不可被继承，所有方法都不能被重写，`final` 和 `abstract` 是互斥的，不能同时修饰一个类
+  - `final`参数：表示这个参数在函数内部不允许被修改；
+2. `finally`，异常处理的一部分，只能用在`try/catch`语句中，表示这段语句最终一定会执行。
+3. `finalize` 是Object类的一个方法，在垃圾回收器执行时会调用被回收对象的`finalize()`方法，可以覆盖此方法来实现对其他资源的回收。比如<b>关闭文件等</b>。
+
+### 4. `assert`有什么作用？
+
+断言:assert，作为一种软件调试的方法，提供了一种在代码中进行正确性检查的机制。
+
+```java
+public class AssertDemo {
+    public static void main(String[] args) {
+        assert 1 + 1 == 2;
+        System.out.println("ok -- 1");
+        assert 1 * 1 == 2;
+        System.out.println("ok -- 2");
+    }
+}
+
+// 启动时添加 Vm options： -ea
+```
+
+### 5. static 关键字的作用？
+
+### 6. switch 注意事项
+
+### 7. `volatile` 
+
+`volatile` 是一个类型修饰符（type specifier）,保证变量的线程一致性。
+不能保证操作的原子性，一般情况下不能代替`sychronized`，并且会降低执行效率，尽量不用。
+
+### 8. `instanceof`
+
+二元运算符，判断一个引用类型的变量所指向的对象是否是一个类class  
+`obj instanceof String`
+
+### 9. `strictfp`
+
+精确浮点
+
+## Java基础知识 - 基本类型与运算
+
+### 1. 基本数据类型
+
+8种基本数据类型
+
+1. byte
+2. short
+3. int
+4. long
+5. float
+6. double
+7. char
+8. boolean
+
+### 2. 什么是不可变类？
+
+### 3. 值传递 & 引用传递
+
+:::tips
+
+:::
+
+### 4. 数据类型转换
+
+### 5. 强制类型转换
+
+### 6. 运算符优先级是什么？
+
+### 7. Math 类
+
+### 8. `i++` & `++i`
+
+### 9. 无符号数的右移
+
+### 10. char型变量存储中文汉字
+
+## Java基础知识 - 字符串与数组
+
+## Java基础知识 - 异常处理
+
+## Java基础知识 - 输入输出流 I/O
+
+## Java基础知识 - Java平台与内存管理
+
+## Java基础知识 - 容器，集合
+
+## Java基础知识 - 多线程
+
+## Java基础知识 - JDBC
+
+## Java基础知识 - Java Web
+
+### Servlet
+
+### IoC
+
+### AOP
+
+### Spring
+
+## Ｊａｖａ设计模式
+## SQL
+## 数据结构与算法
