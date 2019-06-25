@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: /image/g1.gif
+heroImage: https://cdn.nlark.com/yuque/0/2019/gif/159222/1561464137593-82fac4a3-87e8-42f1-8773-e87692bc86d6.gif
 tagline: 菩提本无树，明镜亦非台。
 actionText: Start Explore
 actionLink: /nav
@@ -23,4 +23,11 @@ footer: MIT Licensed | Copyright © 2019-5-23 Paradise
 - 整理博客，文档，梳理计划
 - ...
 
+:::
+
+
+::: warning
+
+首页动图来自：[即刻App] Be社区 法国插画师Guillaume Kurkdjian 
+/image/g1.gif
 :::
