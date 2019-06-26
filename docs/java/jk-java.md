@@ -1,5 +1,9 @@
 # Java核心技术36讲
 
+![强烈推荐加入学习](https://cdn.nlark.com/yuque/0/2019/jpeg/159222/1561478304395-47cc50b6-d12b-4006-bef5-20a4866ad6e9.jpeg?x-oss-process=image/resize,w_311)
+
+[[toc]]
+
 ## 0. 开篇词
 
 Java的重要性，使用广泛。
@@ -330,6 +334,161 @@ String str2 = new String(“123”);//通过new方式赋值方式，不放入字
 ```
 
 ## 6 动态代理是基于什么原理
+
+[原文链接](https://time.geekbang.org/column/article/7489)
+通常认为，Java是静态（类型信息编译期检查）的强类型语言（不同类型变量赋值时，需要显式地强制类型转换），但是因为提供了类似反射等机制，也具备了部分动态类型语言的能力。
+
+谈谈Java反射机制，动态代理是基于什么原理？
+
+### 典型回答
+
+反射机制是Java语言提供的一种基础功能，旨在赋予程序在运行时**自省（introspect）**的能力。通过反射我们可以直接操作类或者对象，比如获取某个对象的类定义，获取类声明的属性和方法，调用方法或者构造对象，甚至可以运行时修改类定义。
+
+动态代理是一种方便运行时构建代理、动态处理代理方法调用的机制，很多场景都是利用类似机制做到的，比如用来包装RPC调用，面向切面的编程（AOP）。
+
+实现动态代理的方式很多，比如JDK自身提供的动态代理，就是主要利用了上面提到的反射机制。还有其他的实现方式，比如利用传说中更高性能的字节码操作机制，类似ASM,cglib，javassit等。
+
+### 考点分析
+
+- 对反射机制的了解和掌握程度
+- 动态代理解决了什么问题？在业务系统中的场景？
+- JDK动态代理在设计和实现上与cglib等方式的区别，如何取舍？
+
+### 知识扩展
+
+1. 反射机制及其演进
+
+基本场景编程  
+运行时修改成员访问限制 AccessibleObject.setAccessible​(boolean flag)
+
+2. 动态代理
+
+代理机制，代理可以看作是对调用目标的一个包装，这样我们对目标代码的调用不是直接发生的，而是通过代理完成。
+其实很多动态代理场景，也可以看作是装饰器模式的应用。通过代理可以让调用者与与实现者之间**解耦**。
+
+很多东西暂时看不懂，需要后面回过头来继续深入学习，螺旋上升。
+
+## 7. int 和 Integer有什么区别？
+
+[原文链接](https://time.geekbang.org/column/article/7514)  
+原始数据类型，int和Integer有什么区别？谈谈Integer的值缓存范围。
+
+### 典型回答
+
+int，整型数字，是Java的8个基本类型之一
+
+Integer是int对应的包装类，它有一个int类型的字段存储数据，并且提供了基本操作，比如数学运算，int和字符串之间的转换等。在Java5中，引入了自动装箱和自动拆箱功能，Java可以根据上下文，自动进行转换，极大地简化了相关编程。
+
+关于Integer的值缓存，在Java5中新增了静态工厂方法valueOf，在调用它的时候会利用一个缓存机制，默认缓存是在[-128,127]
+
+### 考点分析
+
+自动装箱，自动拆箱机制，源码分析等
+
+### 知识扩展
+
+1. 理解自动装箱，自动拆箱
+
+什么是自动装箱和拆箱
+
+自动装箱就是Java自动将原始类型值转换成对应的对象，比如将int的变量转换成Integer对象，这个过程叫做装箱，反之将Integer对象转换成int类型值，这个过程叫做拆箱。因为这里的装箱和拆箱是自动进行的非人为转换，所以就称作为自动装箱和拆箱。原始类型byte,short,char,int,long,float,double和boolean对应的封装类为Byte,Short,Character,Integer,Long,Float,Double,Boolean。
+[参考文章](https://droidyue.com/blog/2015/04/07/autoboxing-and-autounboxing-in-java/)
+```java
+ArrayList<Integer> intList = new ArrayList<Integer>();
+intList.add(1); //autoboxing - primitive to object
+intList.add(2); //autoboxing
+
+ThreadLocal<Integer> intLocal = new ThreadLocal<Integer>();
+intLocal.set(4); //autoboxing
+
+int number = intList.get(0); // unboxing
+int local = intLocal.get(); // unboxing in Java
+
+// 编程时，需要注意到这一点，正确地声明变量类型，避免因为自动装箱引起的性能问题。
+Integer sum = 0;
+ for(int i=1000; i<5000; i++){
+   sum+=i;
+}
+
+int result = sum.intValue() + i;
+Integer sum = new Integer(result);
+
+```
+
+方法重载时不会自动装箱。
+
+2. 源码分析
+
+成员变量，不可变类型
+
+3. 原始类型线程安全
+
+4. Java原始数据类型和引用类型局限性
+
+- 原始数据类型和Java泛型并不能配合使用
+- 无法高效的表达数据，也不便于表达复杂的数据结构
+
+### 课后练习
+
+对象的内存结构是什么样的？比如对象头的结构。如何计算或者获取某个对象的大小？
+
+### 评论学习
+
+
+[JKID-Kyle]  
+节选自《深入理解JAVA虚拟机》：
+在HotSpot虚拟机中，对象在内存中存储的布局可以分为3块区域：对象头（Header）、实例数据（Instance Data）和对齐填充（Padding）。
+
+HotSpot虚拟机的对象头包括两部分信息，第一部分用于存储对象自身的运行时数据，如哈希码（HashCode）、GC分代年龄、锁状态标志、线程持有的锁、偏向线程ID、偏向时间戳等，这部分数据的长度在32位和64位的虚拟机（未开启压缩指针）中分别为32bit和64bit，官方称它为"Mark Word"。
+
+对象头的另外一部分是类型指针，即对象指向它的类元数据的指针，虚拟机通过这个指针来确定这个对象是哪个类的实例。并不是所有的虚拟机实现都必须在对象数据上保留类型指针，换句话说，查找对象的元数据信息并不一定要经过对象本身，这点将在2.3.3节讨论。另外，如果对象是一个Java数组，那在对象头中还必须有一块用于记录数组长度的数据，因为虚拟机可以通过普通Java对象的元数据信息确定Java对象的大小，但是从数组的元数据中却无法确定数组的大小。
+
+接下来的实例数据部分是对象真正存储的有效信息，也是在程序代码中所定义的各种类型的字段内容。无论是从父类继承下来的，还是在子类中定义的，都需要记录起来。
+
+第三部分对齐填充并不是必然存在的，也没有特别的含义，它仅仅起着占位符的作用。由于HotSpot VM的自动内存管理系统要求对象起始地址必须是8字节的整数倍，换句话说，就是对象的大小必须是8字节的整数倍。
+
+## 8. 对比Vector、ArrayList、LinkedList有何区别？
+
+[原文链接](https://time.geekbang.org/column/article/7810)
+
+### 典型回答
+
+这三者都是实现集合框架中的List，也就是所谓的有序集合，因此功能相似，定位，添加，删除，遍历等。但因为具体的设计区别，在行为，性能，线程安全等方面，表现又有很大不同。
+
+Vetor是Java早期提供的线程安全的动态数组
+
+ArrayList是应用更加广泛的动态数组实现，它本身不是线程安全的
+
+LinkedList是双向链表，不需要调整容量，非线程安全
+
+```java
+    private static class Node<E> {
+        E item;
+        Node<E> next;
+        Node<E> prev;
+
+        Node(Node<E> prev, E element, Node<E> next) {
+            this.item = element;
+            this.next = next;
+            this.prev = prev;
+        }
+    }
+```
+
+### 考点分析
+
+1. Vetor和ArrayList 作为动态数组，内部元素以数组形式顺序存储，非常适合**随机访问**，除了尾部插入和删除元素，其它操作性能会相对较差。
+
+2. 而LinkedList进行节点插入、删除却高效的多，但是随机访问性能则要比动态数组慢
+
+3. 数据结构与算法，性能与并发
+
+4. 掌握典型排序算法，内部排序，归并，交换，选择，插入等；外部排序，掌握利用内存和外部存储处理超大数据集
+
+### 知识扩展
+
+![狭义的集合框架](https://static001.geekbang.org/resource/image/67/c7/675536edf1563b11ab7ead0def1215c7.png)  
+
 
 
 ## 15. 如何保证容器是线程安全的？ConcurrentHashMap如何实现高效地线程安全？
