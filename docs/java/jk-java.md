@@ -489,6 +489,16 @@ LinkedList是双向链表，不需要调整容量，非线程安全
 
 ![狭义的集合框架](https://static001.geekbang.org/resource/image/67/c7/675536edf1563b11ab7ead0def1215c7.png)  
 
+- List，有序集合，提供了方便的访问、插入、删除等操作
+- Set，Set不允许元素重复，不存在两个对象equals返回true，保证唯一性
+- Queue/Deque，则是Java提供的标准队列结构的实现
+
+TreeSet默认利用TreeMap实现，HashSet其实也是以HashMap为基础实现的，Map的马甲
+
+- TreeSet 支持自然顺序访问，但是添加、删除、包含等操作相对低效（`log(n)`）
+- HashSet 利用哈希算法，理想情况下，如果哈希散列正常，可以提供常数时间的添加、删除、包含等操作，但是它不保证有序
+- LinkedHashSet，内部构建了一个记录插入顺序的双向链表，因此提供了按照插入顺序遍历的能力，与此同时，也保证了常数时间的添加，删除，包含等操作，这些操作性能略低于HashSet，因为需要维护链表的开销
+- 在遍历元素时，HashSet性能受自身容量影响，所以初始化时，除非有必要，否则不要将其背后的HashMap容量设置过大。而对于
 
 
 ## 15. 如何保证容器是线程安全的？ConcurrentHashMap如何实现高效地线程安全？
