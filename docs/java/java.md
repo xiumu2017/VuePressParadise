@@ -306,7 +306,31 @@ public class AssertDemo {
 在Java语言中，原始数据类型在传递时都是按值传递，而包装类型在传递参数时都是按引用传递。
 :::
 
+这里需要深刻理解，地址传递。
+
+```java
+/**
+ * @author Paradise
+ */
+public class RefDemo {
+    private static void change(StringBuilder s1, StringBuilder s2) {
+        s1.append("...");
+        s2 = s1;
+    }
+
+    public static void main(String[] args) {
+        StringBuilder s1 = new StringBuilder("Hello");
+        StringBuilder s2 = new StringBuilder("Hello");
+        change(s1, s2);
+        System.out.println(s2);
+    }
+}
+```
+
 ### 4. 数据类型转换
+
+- 类型自动转换
+- 强制类型转换
 
 ### 5. 强制类型转换
 
