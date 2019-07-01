@@ -332,29 +332,90 @@ public class RefDemo {
 - 类型自动转换
 - 强制类型转换
 
+[Source - Code](https://github.com/xiumu2017/ddp/blob/transitMonitor/src/main/java/com/paradise/interview/TypeConversion.java)
+
 ### 5. 强制类型转换
+
+Java语言在涉及 byte、short、char类型的运算时，首先会把这些类型的变量值强制转换为int类型。然后对int类型的值进行计算，最后得到的值也是int类型。如果需要得到特定类型的值，还需要进行显式地强制类型转换。`+=` 会被特殊处理，能够编译通过。
+
+![](https://cdn.nlark.com/yuque/0/2019/png/159222/1561967989327-cb5e4529-ac6c-47cf-a32a-8c3a309d2ac3.png)
 
 ### 6. 运算符优先级是什么？
 
+:::danger
+这里需要完善一张表格 :bookmark:
+:::
+
+先记住括号优先级最高
+
+
 ### 7. Math 类
+
+1. round 四舍五入
+2. ceil 向上取整
+3. floor 向下取整
+
+:::danger
+这里需要熟悉下 Math 工具类的源码 :tada: []()
+:::
+
 
 ### 8. `i++` & `++i`
 
+i++ 程序执行完毕后进行自增
+++i 程序开始执行前进行自增
+
 ### 9. 无符号数的右移
+
+`>>` 有符号右移运算符   
+
+`>>>` 无符号右移运算符
+
+:::danger
+需要深入学习二进制编码，各种二进制基本运算思路 :tada:
+:::
+
+`<<` 左移运算，左移n位表示原来的值乘2的n次方，用来代替乘法操作，CPU直接支持位运算，效率高。左移时，移除高位的同时低位补零。
+
+不论是左移还是右移，如果移动的位数超过了该类型的最大数，那么编译器会对移动的位数取模。（int 32位）
 
 ### 10. char型变量存储中文汉字
 
-## Java基础知识 - 字符串与数组
+:::tip
+在Java语言中，默认使用的是Unicode编码方式，即每个字符占用两个字节，因此可以用来存储中文。
+:::
 
-## Java基础知识 - 异常处理
+## 字符串与数组
 
-## Java基础知识 - 输入输出流 I/O
+### String
 
-## Java基础知识 - Java平台与内存管理
+不可变性，字符串池...
+String StringBuffer StringBuilder 三者的比较
 
-## Java基础知识 - 容器，集合
+### 数组
 
-## Java基础知识 - 多线程
+数组是指具有相同类型的数据的集合，它们一般具有固定的长度，并且在内存中占据着连续的空间。
+
+## 异常处理
+
+### finally块中的代码什么时候被执行？
+
+1. 在return 之前
+2. 如果finally块中有return语句，会覆盖别处的return
+
+finally块一定会执行吗？
+1. 当程序在进入try语句之前就出现异常时，会直接结束
+2. `System.exit(0);` try 中强制退出 也不会执行；
+
+
+
+## 输入输出流 I/O
+
+## Java平台与内存管理
+
+## 容器，集合
+
+## 多线程
 
 ### 1. 线程的定义，有什么好处？
 
@@ -520,9 +581,9 @@ public class SyncTestDemo {
 
 > 在Java语言中，`join()` 方法的作用是让调用该方法的线程在执行完 `run()` 方法后，再执行join方法后面的代码。简单地说，就是将两个线程合并，用于实现同步功能。
 
-## Java基础知识 - JDBC
+## JDBC
 
-## Java基础知识 - Java Web
+## Java Web
 
 ### Servlet
 
