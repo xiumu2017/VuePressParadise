@@ -411,9 +411,48 @@ finally块一定会执行吗？
 
 ## 输入输出流 I/O
 
+> 理解流的概念，抽象，字节流，字符流。一个字符两个字节，一个字节8位。
+Java IO 类在设计时采用了Decorator（装饰者）设计模式。
+
+:tada:  
+I/O设计类图  
+
+:smile:  
+装饰器设计模式
+
+深入File类，常用方法  
+
+Socket编程
+
+### Java NIO
+
+非阻塞I/O，具体内容参考Tomcat和Jetty学习部分。
+
+### Java 序列化
+
+Serialization序列化，将对象以一连串的字节描述的过程。
+
+transient 关键字，修饰一个成员变量时，代表对象的临时数据，它的值不需要序列化。
+
 ## Java平台与内存管理
 
 ## 容器，集合
+
+### Java Collection 框架
+
+Stack 栈
+Queue 队列
+Set 集合  
+List 有序集合
+Map 键值对
+
+框架设计，架构图，设计模式 :tada:
+
+### 迭代器
+
+源码分析 :tada:
+
+### Collections 工具类分析
 
 ## 多线程
 
@@ -581,18 +620,4 @@ public class SyncTestDemo {
 
 > 在Java语言中，`join()` 方法的作用是让调用该方法的线程在执行完 `run()` 方法后，再执行join方法后面的代码。简单地说，就是将两个线程合并，用于实现同步功能。
 
-## JDBC
-
-## Java Web
-
-### Servlet
-
-### IoC
-
-### AOP
-
-### Spring
-
-## 设计模式
-## SQL
-## 数据结构与算法
+<disqus />

@@ -34,4 +34,8 @@ Java学习路径，学习笔记，读书笔记，极客时间专栏笔记等。
 [DISQUS](https://disqus.com/)  
 可惜的是需要科学上网，加载速度太慢
 
+### Collection
+
+[😍😍😍](/collector/)
+[😍😍😍😍](/collector/site)
 <disqus/>
