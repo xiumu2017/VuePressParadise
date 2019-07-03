@@ -2,6 +2,8 @@
 
 ![强烈推荐加入学习](https://cdn.nlark.com/yuque/0/2019/jpeg/159222/1561478304395-47cc50b6-d12b-4006-bef5-20a4866ad6e9.jpeg?x-oss-process=image/resize,w_311)
 
+极客时间 | Java核心技术36讲学习笔记
+
 [[toc]]
 
 ## 0. 开篇词
@@ -47,25 +49,23 @@ Java是解释执行吗？
 
 ## 2. Exception 和 Error 有什么区别？
 
-世界上存在永远不会出错的程序吗？也许这只会出现在程序员的梦中。
-随着编程语言和软件的诞生，异常情况就如影随形地纠缠着我们，只有正确处理好意外情况，才能保证程序的可靠性。
+[原文链接](https://time.geekbang.org/column/article/6849)
 
-Java 语言在设计之初就提供了相对完善的异常处理机制，这也是 Java 得以大行其道的原因之一，因为这种机制大大降低了编写和维护可靠程序的门槛。
+Java 语言在设计之初就提供了相对完善的异常处理机制，这也是 Java 得以大行其道的原因之一，因为这种机制大大降低了编写和维护可靠程序的门槛。如今，异常处理机制已经成为现代编程语言的标配。  
 
-如今，异常处理机制已经成为现代编程语言的标配。 
-
-今天我要问你的问题是，请对比 Exception 和 Error，另外，运行时异常与一般异常有什么区别？ 
+请对比 Exception 和 Error，另外，运行时异常与一般异常有什么区别？ 
 
 #### 典型回答 
 
-Exception 和 Error 都是继承了 Throwable 类，在 Java 中只有 Throwable 类型的实例才可以被抛出（throw）或者捕获（catch），它是异常处理机制的基本组成类型。 
+Exception 和 Error 都是继承了 Throwable 类，在 Java 中只有 Throwable 类型的实例才可以被抛出（throw）或者捕获（catch），它是异常处理机制的基本组成类型。
 
 Exception 和 Error 体现了 Java 平台设计者对不同异常情况的分类。
 
 Exception 是程序正常运行中，可以预料的意外情况，可能并且应该被捕获，进行相应处理。
+
 Error 是指在正常情况下，不大可能出现的情况，绝大部分的 Error 都会导致程序（比如 JVM 自身）处于非正常的、不可恢复状态。既然是非正常情况，所以不便于也不需要捕获，常见的比如 OutOfMemoryError 之类，都是 Error 的子类。
 
-Exception 又分为可检查（checked）异常和不检查（unchecked）异常，可检查异常在源代码里必须显式地进行捕获处理，这是编译期检查的一部分。前面我介绍的不可查的 Error，是 Throwable 不是 Exception。 不检查异常就是所谓的运行时异常，类似 NullPointerException、ArrayIndexOutOfBoundsException 之类，通常是可以编码避免的逻辑错误，具体根据需要来判断是否需要捕获，并不会在编译期强制要求。 
+Exception 又分为可检查（checked）异常和不检查（unchecked）异常，可检查异常在源代码里必须显式地进行捕获处理，这是编译期检查的一部分。不检查异常就是所谓的**运行时异常**，类似 `NullPointerException`、`ArrayIndexOutOfBoundsException` 之类，通常是可以编码避免的逻辑错误，具体根据需要来判断是否需要捕获，并不会在编译期强制要求。 
 
 #### 考点分析 
 
@@ -85,6 +85,7 @@ try (BufferedReader br = new BufferedReader(…);
  // Handle it 
  } 
 ```
+
 #### 知识扩展 
 前面谈的大多是概念性的东西，下面我来谈些实践中的选择，我会结合一些代码用例进行分析。 先开看第一个吧，下面的代码反映了异常处理中哪些不当之处？ 
 ```java
@@ -99,21 +100,9 @@ try {
 
 这段代码虽然很短，但是已经违反了异常处理的两个基本原则。 
 
-第一，尽量不要捕获类似 Exception 这样的通用异常，而是应该捕获特定异常，在这里是 Thread.sleep() 抛出的 InterruptedException。 这是因为在日常的开发和合作中，我们读代码的机会往往超过写代码，软件工程是门协作的艺术，所以我们有义务让自己的代码能够直观地体现出尽量多的信息，而泛泛的 Exception 之类，恰恰隐藏了我们的目的。另外，我们也要保证程序不会捕获到我们不希望捕获的异常。比如，你可能更希望 RuntimeException 被扩散出来，而不是被捕获。 进一步讲，除非深思熟虑了，否则不要捕获 Throwable 或者 Error，这样很难保证我们能够正确程序处理 OutOfMemoryError。 
+第一，尽量不要捕获类似 `Exception` 这样的通用异常，而是应该**捕获特定异常**，在这里是 `Thread.sleep()` 抛出的 `InterruptedException`。 这是因为在日常的开发和合作中，我们读代码的机会往往超过写代码，软件工程是门协作的艺术，所以我们有义务让自己的代码能够直观地体现出尽量多的信息，而泛泛的 Exception 之类，恰恰隐藏了我们的目的。另外，我们也要保证程序不会捕获到我们不希望捕获的异常。比如，你可能更希望 RuntimeException 被扩散出来，而不是被捕获。 进一步讲，除非深思熟虑了，否则不要捕获 Throwable 或者 Error，这样很难保证我们能够正确程序处理 OutOfMemoryError。 
 
 第二，不要生吞（swallow）异常。这是异常处理中要特别注意的事情，因为很可能会导致非常难以诊断的诡异情况。 生吞异常，往往是基于假设这段代码可能不会发生，或者感觉忽略异常是无所谓的，但是千万不要在产品代码做这种假设！ 如果我们不把异常抛出来，或者也没有输出到日志（Logger）之类，程序可能在后续代码以不可控的方式结束。没人能够轻易判断究竟是哪里抛出了异常，以及是什么原因产生了异常。 
-
-再来看看第二段代码 
-```java
-try { 
-    // 业务代码 
-    // … 
-} catch (IOException e) { 
-    e.printStackTrace(); 
-}
-```
-
- 这段代码作为一段实验代码，它是没有任何问题的，但是在产品代码中，通常都不允许这样处理。你先思考一下这是为什么呢？ 我们先来看看printStackTrace()的文档，开头就是“Prints this throwable and its backtrace to the standard error stream”。问题就在这里，在稍微复杂一点的生产系统中，标准出错（STERR）不是个合适的输出选项，因为你很难判断出到底输出到哪里去了。 尤其是对于分布式系统，如果发生异常，但是无法找到堆栈轨迹（stacktrace），这纯属是为诊断设置障碍。所以，最好使用产品日志，详细地输出到日志系统里。 我们接下来看下面的代码段，体会一下Throw early, catch late 原则。 
  
  ```java
  public void readPreferences(String fileName){ 
@@ -126,17 +115,16 @@ try {
  
  ```java
  public void readPreferences(String filename) { 
-     Objects. requireNonNull(filename); 
+     Objects.requireNonNull(filename); 
      //...perform other operations... 
      InputStream in = new FileInputStream(filename); 
      //...read the preferences file... 
 } 
  ```
 
- 至于“catch late”，其实是我们经常苦恼的问题，捕获异常后，需要怎么处理呢？最差的处理方式，就是我前面提到的“生吞异常”，本质上其实是掩盖问题。如果实在不知道如何处理，可以选择保留原有异常的 cause 信息，直接再抛出或者构建新的异常抛出去。在更高层面，因为有了清晰的（业务）逻辑，往往会更清楚合适的处理方式是什么。 有的时候，我们会根据需要自定义异常，这个时候除了保证提供足够的信息，还有两点需要考虑： 是否需要定义成 Checked Exception，因为这种类型设计的初衷更是为了从异常情况恢复，作为异常设计者，我们往往有充足信息进行分类。 在保证诊断信息足够的同时，也要考虑避免包含敏感信息，因为那样可能导致潜在的安全问题。如果我们看 Java 的标准类库，你可能注意到类似 java.net.ConnectException，出错信息是类似“ Connection refused (Connection refused)”，而不包含具体的机器名、IP、端口等，一个重要考量就是信息安全。类似的情况在日志中也有，比如，用户数据一般是不可以输出到日志里面的。 业界有一种争论（甚至可以算是某种程度的共识），Java 语言的 Checked Exception 也许是个设计错误，反对者列举了几点： Checked Exception 的假设是我们捕获了异常，然后恢复程序。但是，其实我们大多数情况下，根本就不可能恢复。Checked Exception 的使用，已经大大偏离了最初的设计目的。 Checked Exception 不兼容 functional 编程，如果你写过 Lambda/Stream 代码，相信深有体会。 很多开源项目，已经采纳了这种实践，比如 Spring、Hibernate 等，甚至反映在新的编程语言设计中，比如 Scala 等。 
- 如果有兴趣，你可以参考： http://literatejava.com/exceptions/checked-exceptions-javas-biggest-mistake/。 当然，很多人也觉得没有必要矫枉过正，因为确实有一些异常，比如和环境相关的 IO、网络等，其实是存在可恢复性的，而且 Java 已经通过业界的海量实践，证明了其构建高质量软件的能力。
+ 至于“catch late”，其实是我们经常苦恼的问题，捕获异常后，需要怎么处理呢？最差的处理方式，就是我前面提到的“生吞异常”，本质上其实是掩盖问题。如果实在不知道如何处理，可以选择保留原有异常的 cause 信息，直接再抛出或者构建新的异常抛出去。在更高层面，因为有了清晰的（业务）逻辑，往往会更清楚合适的处理方式是什么。 有的时候，我们会根据需要自定义异常，这个时候除了保证提供足够的信息，还有两点需要考虑： 是否需要定义成 Checked Exception，因为这种类型设计的初衷更是为了从异常情况恢复，作为异常设计者，我们往往有充足信息进行分类。 在保证诊断信息足够的同时，也要考虑避免包含敏感信息，因为那样可能导致潜在的安全问题。如果我们看 Java 的标准类库，你可能注意到类似 java.net.ConnectException，出错信息是类似“ Connection refused (Connection refused)”，而不包含具体的机器名、IP、端口等，一个重要考量就是信息安全。类似的情况在日志中也有，比如，用户数据一般是不可以输出到日志里面的。
  
- 我们从性能角度来审视一下 Java 的异常处理机制，这里有两个可能会相对昂贵的地方： try-catch 代码段会产生额外的性能开销，或者换个角度说，它往往会影响 JVM 对代码进行优化，所以建议仅捕获有必要的代码段，尽量不要一个大的 try 包住整段的代码；与此同时，利用异常控制代码流程，也不是一个好主意，远比我们通常意义上的条件语句（if/else、switch）要低效。 Java 每实例化一个 Exception，都会对当时的栈进行快照，这是一个相对比较重的操作。如果发生的非常频繁，这个开销可就不能被忽略了。 所以，对于部分追求极致性能的底层类库，有种方式是尝试创建不进行栈快照的 Exception。这本身也存在争议，因为这样做的假设在于，我创建异常时知道未来是否需要堆栈。问题是，实际上可能吗？小范围或许可能，但是在大规模项目中，这么做可能不是个理智的选择。如果需要堆栈，但又没有收集这些信息，在复杂情况下，尤其是类似微服务这种分布式系统，这会大大增加诊断的难度。 当我们的服务出现反应变慢、吞吐量下降的时候，检查发生最频繁的 Exception 也是一种思路。关于诊断后台变慢的问题，我会在后面的 Java 性能基础模块中系统探讨。 今天，我从一个常见的异常处理概念问题，简单总结了 Java 异常处理的机制。并结合代码，分析了一些普遍认可的最佳实践，以及业界最新的一些异常使用共识。最后，我分析了异常性能开销，希望对你有所帮助。 一课一练 关于今天我们讨论的题目你做到心中有数了吗？可以思考一个问题，对于异常处理编程，不同的编程范式也会影响到异常处理策略，比如，现在非常火热的反应式编程（Reactive Stream），因为其本身是异步、基于事件机制的，所以出现异常情况，决不能简单抛出去；另外，由于代码堆栈不再是同步调用那种垂直的结构，这里的异常处理和日志需要更加小心，我们看到的往往是特定 executor 的堆栈，而不是业务方法调用关系。对于这种情况，你有什么好的办法吗？ 请你在留言区分享一下你的解决方案，我会选出经过认真思考的留言，送给你一份学习鼓励金，欢迎你与我一起讨论。 你的朋友是不是也在准备面试呢？你可以“请朋友读”，把今天的题目分享给好友，或许你能帮到他。 © 版权归极客邦科技所有，未经许可不得传播售卖。 页面已增加防盗追踪，如有侵权极客邦将依法追究其法律责任。"}]}
+ 我们从性能角度来审视一下 Java 的异常处理机制，这里有两个可能会相对昂贵的地方： try-catch 代码段会产生额外的性能开销，或者换个角度说，它往往会影响 JVM 对代码进行优化，所以建议**仅捕获有必要的代码段**，尽量不要一个大的 try 包住整段的代码；与此同时，利用异常控制代码流程，也不是一个好主意，远比我们通常意义上的条件语句（if/else、switch）要低效。 Java 每实例化一个 Exception，都会对当时的栈进行快照，这是一个相对比较重的操作。如果发生的非常频繁，这个开销可就不能被忽略了。
 
 
 ## 3 谈谈final,finally,finalize有什么不同？
@@ -178,8 +166,9 @@ final 只能约束 strList这个引用不可以被赋值，但是strList对象�
 
 ## 4. 强引用，软引用，弱引用，幻想引用有什么区别？
 
-强引用，软引用，弱引用，幻想引用有什么区别？具体使用场景是什么？
 [原文链接](https://time.geekbang.org/column/article/6970)
+
+强引用，软引用，弱引用，幻想引用有什么区别？具体使用场景是什么？
 
 ### 典型回答
 
@@ -251,8 +240,9 @@ PhantomReference pr = new PhantomReference (object, queue);
 
 ## 5 String & StringBuffer & StringBuilder 有什么区别？
 
-理解Java的字符串，String、StringBulider、StringBuffer 有什么区别？  
 [原文链接](https://time.geekbang.org/column/article/7349)
+
+理解Java的字符串，String、StringBulider、StringBuffer 有什么区别？  
 
 ### 典型回答
  
@@ -335,7 +325,8 @@ String str2 = new String(“123”);//通过new方式赋值方式，不放入字
 
 ## 6 动态代理是基于什么原理
 
-[原文链接](https://time.geekbang.org/column/article/7489)  
+[原文链接](https://time.geekbang.org/column/article/7489)
+
 通常认为，Java是静态（类型信息编译期检查）的强类型语言（不同类型变量赋值时，需要显式地强制类型转换），但是因为提供了类似反射等机制，也具备了部分动态类型语言的能力。
 
 谈谈Java反射机制，动态代理是基于什么原理？
@@ -370,7 +361,8 @@ String str2 = new String(“123”);//通过new方式赋值方式，不放入字
 
 ## 7. int 和 Integer有什么区别？
 
-[原文链接](https://time.geekbang.org/column/article/7514)  
+[原文链接](https://time.geekbang.org/column/article/7514)
+
 原始数据类型，int和Integer有什么区别？谈谈Integer的值缓存范围。
 
 ### 典型回答
@@ -493,14 +485,141 @@ LinkedList是双向链表，不需要调整容量，非线程安全
 - Set，Set不允许元素重复，不存在两个对象equals返回true，保证唯一性
 - Queue/Deque，则是Java提供的标准队列结构的实现
 
-TreeSet默认利用TreeMap实现，HashSet其实也是以HashMap为基础实现的，Map的马甲
+**TreeSet默认利用TreeMap实现，HashSet其实也是以HashMap为基础实现的，Map的马甲**
 
 - TreeSet 支持自然顺序访问，但是添加、删除、包含等操作相对低效（`log(n)`）
 - HashSet 利用哈希算法，理想情况下，如果哈希散列正常，可以提供常数时间的添加、删除、包含等操作，但是它不保证有序
 - LinkedHashSet，内部构建了一个记录插入顺序的双向链表，因此提供了按照插入顺序遍历的能力，与此同时，也保证了常数时间的添加，删除，包含等操作，这些操作性能略低于HashSet，因为需要维护链表的开销
-- 在遍历元素时，HashSet性能受自身容量影响，所以初始化时，除非有必要，否则不要将其背后的HashMap容量设置过大。而对于
+- 在遍历元素时，HashSet性能受自身容量影响，所以初始化时，除非有必要，否则不要将其背后的HashMap容量设置过大。而对于LinkedHashSet，由于其内部链表提供的方便，遍历性能只和元素多少有关系。
+
+:::warning
+Q: 如何进行容器的性能测试呢？
+:::
+
+这些集合类都不是线程安全的，但是可以通过 `Collections` 工具类的 `synchronized` 实现线程安全：
+
+```java
+List list = Collections.synchronizedList(new ArrayList());
+```
+
+:::danger @TODO
+1. 扩展学习 `Collections` 集合工具类提供的静态方法
+2. ArrayList 源码实现
+:::
+
+Java 提供的默认排序算法：
+
+- 对于原始数据类型，目前使用的是所谓双轴快速排序（Dual-Pivot QuickSort），是一种改进的快速排序算法
+- 对于对象数据类型，目前是则是使用TimSort，思想上也是一种归并和二分插入排序结合的优化排序算法
+
+Java 8 改进：
+支持Lambda和Stream，函数式代码；  
+Java 8 在语言层面的新特性，允许接口实现默认方法；  
+
+Java 9 改进：
+Java标准类库提供了一系列的静态工厂方法，比如，`List.of()` `Set.of()`，代码简洁，同时是不可变的。
+```java
+List<String> simpleList = List.of("Hello","world");
+```
+
+## 9. 对比Hashtable，HashMap，TreeMap有什么不同
+
+[原文链接](https://time.geekbang.org/column/article/8053)
+
+[从HashMap 开始...](https://www.yuque.com/paradise/wxs9x9/cxgbug)
+
+### 负载因子，容量
+
+## 10. 如何保证容器是线程安全的？ConcurrentHashMap如何实现高效地线程安全？
+
+[原文链接](https://time.geekbang.org/column/article/8137)
+
+::: tip 典型回答
+
+Java提供了不同层面的线程安全支持。在传统集合框架内部，除了Hashtable等同步容器，还提供了所谓的同步包装器（Synchronized Wrapper）,我们可以调用 `Collections` 工具类提供的包装方法，来获取一个同步的包装容器，但是它们都是利用非常粗粒度的同步方式，在高并发情况下，性能比较低下。
+
+更加普遍的选择是利用并发包提供的线程安全容器类，它提供了：
+
+1. 各种并发容器，比如 `ConcurrentHashMap`,`CopyOnWriteArrayList`
+2. 各种线程安全队列（`Queue`/ `Deque`）,`ArrayBlockingQueue` `SynchronousQueue`
+3. 各种有序容器的线程安全版本等。
+
+  具体保证线程安全的方式，从简单的sychronize方式，到基于更加精细化的，比如基于分离锁实现的`ConcurrentHashMap`等并发实现等。总体来说，并发包内提供的容器通用场景，远优于早期的简单同步实现。
+:::
+
+::: tip 知识扩展
+
+**为什么需要ConcurrentHashMap？**
+Hashtable 低效，HashMap 非线程安全；同步包装器的内部实现还是利用了'this' 作为互斥的mutex，没有真正意义上的改进。只适合在非高度并发的场景下。
+
+**ConcurrentHashMap分析**
+
+*完全没有看懂* ，无法体会那种场景，cas是什么 unsafe 又是什么？
+
+:::
 
 
-## 15. 如何保证容器是线程安全的？ConcurrentHashMap如何实现高效地线程安全？
+## 11. Java I/O 方式？NIO如何实现多路复用？
 
-https://time.geekbang.org/column/article/8137
+这一章节配合Tomcat & Jetty 源码食用。
+
+[whats-the-difference-between-jetty-and-netty](https://stackoverflow.com/questions/5385407/whats-the-difference-between-jetty-and-netty)
+
+:::tip
+**Jetty** is a lightweight servlet container, easy to embed within a java application, there is an easy to use jetty client also.
+
+**Netty** is an asynchronous event-driven network application framework. You can write your own servlet container or http client app with help of the Netty framework for example.
+
+Edit:
+
+Forgot to mention that Jetty 8 and Apache Tomcat 7 support servlet 3.0 spec, but netty doesn't. Because it's not a servlet container.
+
+Netty 不是 servlet 容器，异步事件驱动网络程序框架。
+:::
+
+
+## 12. Java 文件拷贝方式
+
+[原文链接](https://time.geekbang.org/column/article/8393)
+
+[参考文章](https://www.journaldev.com/861/java-copy-file)
+
+[参考源码](https://github.com/xiumu2017/ddp/blob/transitMonitor/src/main/java/com/paradise/interview/io/file/FileCopyDemo.java)
+```java
+    /**
+     * Java io 实现 文件拷贝
+     *
+     * @param source 源文件
+     * @param dest   目的文件
+     * @throws IOException IO 异常
+     */
+    private static void copy(String source, File dest) throws IOException {
+        try (
+                InputStream inputStream = new FileInputStream(source);
+                OutputStream outputStream = new FileOutputStream(dest)) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, length);
+            }
+        }
+    }
+```
+
+## 13. 谈谈抽象类和接口的区别
+
+:::tip 典型回答
+接口和抽象类是Java面向对象设计的两个基础机制。
+
+接口是对行为的抽象，它是抽象方法的集合，利用接口可以达到API定义和实现分离的目的。  
+接口不能实例化，不能包含任何非常量成员，任何field都是隐含着`public static final`的意义；  
+同时，没有非静态方法实现，也就是说要么是静态方法，要么是抽象方法。
+
+抽象类是不能实例化的类，用abstract关键字修饰class，其目的主要是代码重用。除了不能实例化，形式上和一般的Java类没有太大区别，可以有一个或者多个抽象方法，也可以没有抽象方法。抽象类大多用于抽取Java类的共用方法实现或者是共同成员变量，然后通过继承达到代码复用的目的。
+:::
+
+:::warning 知识扩展
+
+Java 8 以后，接口也是可以有方法实现的！比如 `Collection`
+
+## 14. 设计模式
