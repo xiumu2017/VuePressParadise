@@ -503,9 +503,11 @@ wait方法释放对象锁
 
 `sleep()` 是 `Thread` 类的静态方法，用于线程控制自身流程，会使此线程暂停执行一段时间
 
-`wait()` 是 Object类的方法，用于线程间的通信，会使当前拥有该对象锁的进程等待；必须放在同步控制方法或者同步语句块中。
+`wait()` 是 Object类的方法，用于线程间的通信，会使当前拥有该对象锁的进程等待；必须放在同步控制方法或者同步语句块中。会释放对象的管程和锁。
 
-`yield()` 方法使当前线程重新回到可执行状态
+`yield()` 方法使当前线程重新回到可执行状态，释放线程所占有的CPU资源。
+
+有一个易错的地方，当调用t.sleep()的时候，会暂停线程t。这是不对的，因为Thread.sleep是一个静态方法，它会使当前线程而不是线程t进入休眠状态。
 
 ### 7. 终止线程的方法
 
@@ -615,9 +617,315 @@ public class SyncTestDemo {
 
 > 守护线程又被称为“服务进程”，“精灵线程”，“后台线程”，是指在程序运行时在后台提供一种通用服务的线程，这种线程并不属于程序中不可或缺的部分。依赖于用户线程存在。
 
+:::tip gitchat
+守护线程是运行在后台的一种特殊进程。它独立于控制终端并且周期性地执行某种任务或等待处理某些发生的事件。在 Java 中垃圾回收线程就是特殊的守护线程。
+:::
+
 
 ### 10. `join()`
 
 > 在Java语言中，`join()` 方法的作用是让调用该方法的线程在执行完 `run()` 方法后，再执行join方法后面的代码。简单地说，就是将两个线程合并，用于实现同步功能。
+
+## GitChat
+
+:::tip gitchat 补充内容
+#### runnable 和 callable 的区别？
+
+runnable 没有返回值
+callable 可以有返回值
+
+#### 线程有哪些状态？
+- NEW 尚未启动
+- RUNNABLE 正在执行中
+- BLOCKED 阻塞 （被同步锁或者IO锁阻塞）
+- WAITING 永久等待状态
+- TIMED_WAITING 等待指定的时间重新被唤醒的状态
+- TERMINATED 执行完成
+
+#### 创建线程池有哪几种方式？
+
+线程池创建有七种方式，最核心的是最后一种：
+
+- `newSingleThreadExecutor()`：它的特点在于工作线程数目被限制为 1，操作一个无界的工作队列，所以它保证了所有任务的都是被顺序执行，最多会有一个任务处于活动状态，并且不允许使用者改动线程池实例，因此可以避免其改变线程数目；
+
+- `newCachedThreadPool()`：它是一种用来处理大量短时间工作任务的线程池，具有几个鲜明特点：它会试图缓存线程并重用，当无缓存线程可用时，就会创建新的工作线程；如果线程闲置的时间超过 60 秒，则被终止并移出缓存；长时间闲置时，这种线程池，不会消耗什么资源。其内部使用 SynchronousQueue 作为工作队列；
+
+- `newFixedThreadPool(int nThreads)`：重用指定数目（nThreads）的线程，其背后使用的是无界的工作队列，任何时候最多有 nThreads 个工作线程是活动的。这意味着，如果任务数量超过了活动队列数目，将在工作队列中等待空闲线程出现；如果有工作线程退出，将会有新的工作线程被创建，以补足指定的数目 nThreads；
+
+- `newSingleThreadScheduledExecutor()`：创建单线程池，返回 ScheduledExecutorService，可以进行定时或周期性的工作调度；
+
+- `newScheduledThreadPool(int corePoolSize)`：和newSingleThreadScheduledExecutor()类似，创建的是个 ScheduledExecutorService，可以进行定时或周期性的工作调度，区别在于单一工作线程还是多个工作线程；
+
+- `newWorkStealingPool(int parallelism)`：这是一个经常被人忽略的线程池，Java 8 才加入这个创建方法，其内部会构建ForkJoinPool，利用Work-Stealing算法，并行地处理任务，不保证处理顺序；
+
+- `ThreadPoolExecutor()`：是最原始的线程池创建，上面1-3创建方式都是对ThreadPoolExecutor的封装。
+
+#### 线程池都有哪些状态？
+
+- RUNNING 最正常的状态，接受新的任务，处理等待队列中的任务
+- SHUTDOWN 不接受新的任务提交，但是会继续处理等待队列中的任务
+- STOP 不接受新的任务提交，不再处理等待队列中的任务，中断正在执行的任务
+- TIDYING 销毁所有的任务，workCout为0，线程池的状态转换为TIDYING状态时，会执行钩子方法`terminated()`
+- TERMINATED `terminated()` 方法结束后，线程池的状态就会变成这个。
+
+#### 线程池中 `submit()` `execute()` 方法的区别？
+
+前者可以执行Runnable和Callable类型的任务，后者只能执行Runnable类型的任务
+
+#### 多线程中 synchronized 锁升级的原理是什么？
+synchronized 锁升级原理：在锁对象的对象头里面有一个 threadid 字段，在第一次访问的时候 threadid 为空，jvm 让其持有**偏向锁**，并将 threadid 设置为其线程 id，再次进入的时候会先判断 threadid 是否与其线程 id 一致，如果一致则可以直接使用此对象，如果不一致，则升级偏向锁为**轻量级锁**，通过自旋循环一定次数来获取锁，执行一定次数之后，如果还没有正常获取到要使用的对象，此时就会把锁从轻量级升级为重量级锁，此过程就构成了 synchronized 锁的升级。
+
+锁的升级的目的：锁升级是为了减低了锁带来的性能消耗。在 Java 6 之后优化 synchronized 的实现方式，使用了偏向锁升级为轻量级锁再升级到重量级锁的方式，从而减低了锁带来的性能消耗。
+
+#### ThreadLocal 是什么？有哪些使用场景？
+ThreadLocal 为每个使用该变量的线程提供独立的变量副本，所以每一个线程都可以独立地改变自己的副本，而不会影响其它线程所对应的副本。
+
+ThreadLocal 的经典使用场景是数据库连接和 session 管理等。
+
+#### 说一下 synchronized 底层实现原理？
+synchronized 是由一对 monitorenter/monitorexit 指令实现的，monitor 对象是同步的基本实现单元。在 Java 6 之前，monitor 的实现完全是依靠操作系统内部的互斥锁，因为需要进行用户态到内核态的切换，所以同步操作是一个无差别的重量级操作，性能也很低。但在 Java 6 的时候，Java 虚拟机 对此进行了大刀阔斧地改进，提供了三种不同的 monitor 实现，也就是常说的三种不同的锁：偏向锁（Biased Locking）、轻量级锁和重量级锁，大大改进了其性能。
+
+#### 说一下 atomic 的原理？
+atomic 主要利用 CAS (Compare And Wwap) 和 volatile 和 native 方法来保证原子操作，从而避免 synchronized 的高开销，执行效率大为提升。
+
+---
+#### 动态代理是什么？有哪些应用
+
+动态代理是运行时动态生成代理类。
+
+动态代理的应用有spring aop，hibernate数据查询，测试框架的后端mock，rpc，Java注解对象获取等。
+
+#### 如何实现动态代理？
+JDK原生动态代理和cglib动态代理。前者基于接口实现，cglib是基于继承当前类的子类实现的。
+
+#### 对象拷贝
+
+深拷贝，浅拷贝。
+
+---
+
+#### 什么是servlet？
+
+#### session 和 cookie
+
+---
+
+#### http响应码301和302代表的各是什么？区别？
+
+301：永久重定向
+302：暂时重定向
+
+区别是301对搜索引擎优化SEO更加有利，302有被提示为网络拦截的风险。
+
+#### forward和redirect的区别？
+
+forward 是转发 和 redirect 是重定向：
+
+- 地址栏 url 显示：foward url 不会发生改变，redirect url 会发生改变；
+- 数据共享：forward 可以共享 request 里的数据，redirect 不能共享；
+- 效率：forward 比 redirect 效率高。
+
+#### 说一下 tcp 粘包是怎么产生的？
+tcp 粘包可能发生在发送端或者接收端，分别来看两端各种产生粘包的原因：
+
+- 发送端粘包：发送端需要等缓冲区满才发送出去，造成粘包；
+- 接收方粘包：接收方不及时接收缓冲区的包，造成多个包接收。
+
+#### get 和 post 请求的区别？
+- get请求会被浏览器主动缓存，而post不会
+- get传递参数有大小限制，而post没有
+- post参数传输更安全，get的参数会明文显示在url上
+
+#### 如何实现跨域
+- 服务端运行跨域 设置 CORS等于*；
+- 在单个接口使用注解 @CrossOrigin
+- 使用jsonp跨域
+
+jsonp：JSON with padding，它是利用scripts标签的src连接可以访问不同源的特性，加载远程返回的“js函数”来执行的。
+
+--- 
+设计模式
+
+#### 说一下你熟悉的设计模式？
+- 单例模式：保证被创建一次，节省系统开销。
+- 工厂模式（简单工厂、抽象工厂）：解耦代码。
+- 观察者模式：定义了对象之间的一对多的依赖，这样一来，当一个对象改变时，它的所有的依赖者都会收到通知并自动更新。
+- 外观模式：提供一个统一的接口，用来访问子系统中的一群接口，外观定义了一个高层的接口，让子系统更容易使用。
+- 模版方法模式：定义了一个算法的骨架，而将一些步骤延迟到子类中，模版方法使得子类可以在不改变算法结构的情况下，重新定义算法的步骤。
+- 状态模式：允许对象在内部状态改变时改变它的行为，对象看起来好像修改了它的类。
+
+#### 简单工厂和抽象工厂有什么区别？
+简单工厂：用来生产同一等级结构中的任意产品，对于增加新的产品，无能为力。
+
+工厂方法：用来生产同一等级结构中的固定产品，支持增加任意产品。
+
+抽象工厂：用来生产不同产品族的全部产品，对于增加新的产品，无能为力；支持增加产品族。
+
+:::
+
+#### 为什么要使用 spring？
+
+spring 提供 ioc 技术，容器会帮你管理依赖的对象，从而不需要自己创建和管理依赖对象了，更轻松的实现了程序的解耦。
+
+spring 提供了事务支持，使得事务操作变的更加方便。
+
+spring 提供了面向切片编程，这样可以更方便的处理某一类的问题。
+
+更方便的框架集成，spring 可以很方便的集成其他框架，比如 MyBatis、hibernate 等。
+
+#### 解释一下什么是 aop？
+aop 是面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。
+
+简单来说就是统一处理某一“切面”（类）的问题的编程思想，比如统一处理日志、异常等。
+
+#### 解释一下什么是 ioc？
+ioc：Inversionof Control（中文：控制反转）是 spring 的核心，对于 spring 框架来说，就是由 spring 来负责控制对象的生命周期和对象间的关系。
+
+简单来说，控制指的是当前对象对内部成员的控制权；控制反转指的是，这种控制权不由当前对象管理了，由其他（类,第三方容器）来管理。
+
+#### spring 有哪些主要模块？
+- spring core：框架的最基础部分，提供 ioc 和依赖注入特性。
+- spring context：构建于 core 封装包基础上的 context 封装包，提供了一种框架式的对象访问方法。
+- spring dao：Data Access Object 提供了JDBC的抽象层。
+- spring aop：提供了面向切面的编程实现，让你可以自定义拦截器、切点等。
+- spring Web：提供了针对 Web 开发的集成特性，例如文件上传，利用 servlet listeners 进行 ioc 容器初始化和针对 Web 的 ApplicationContext。
+- spring Web mvc：spring 中的 mvc 封装包提供了 Web 应用的 Model-View-Controller（MVC）的实现。
+
+#### spring 中的 bean 是线程安全的吗？
+spring 中的 bean 默认是单例模式，spring 框架并没有对单例 bean 进行多线程的封装处理。
+
+实际上大部分时候 spring bean 无状态的（比如 dao 类），所有某种程度上来说 bean 也是安全的，但如果 bean 有状态的话（比如 view model 对象），那就要开发者自己去保证线程安全了，最简单的就是改变 bean 的作用域，把“singleton”变更为“prototype”，这样请求 bean 相当于 new Bean()了，所以就可以保证线程安全了。
+
+有状态就是有数据存储功能。
+无状态就是不会保存数据。
+
+#### spring 支持几种 bean 的作用域？
+spring 支持 5 种作用域，如下：
+
+singleton：spring ioc 容器中只存在一个 bean 实例，bean 以单例模式存在，是系统默认值；
+prototype：每次从容器调用 bean 时都会创建一个新的示例，既每次 getBean()相当于执行 new Bean()操作；
+Web 环境下的作用域：
+request：每次 http 请求都会创建一个 bean；
+session：同一个 http session 共享一个 bean 实例；
+global-session：用于 portlet 容器，因为每个 portlet 有单独的 session，globalsession 提供一个全局性的 http session。
+注意： 使用 prototype 作用域需要慎重的思考，因为频繁创建和销毁 bean 会带来很大的性能开销。
+
+#### spring 自动装配 bean 有哪些方式？
+no：默认值，表示没有自动装配，应使用显式 bean 引用进行装配。
+byName：它根据 bean 的名称注入对象依赖项。
+byType：它根据类型注入对象依赖项。
+构造函数：通过构造函数来注入依赖项，需要设置大量的参数。
+autodetect：容器首先通过构造函数使用 autowire 装配，如果不能，则通过 byType 自动装配。
+
+#### spring 事务实现方式有哪些？
+声明式事务：声明式事务也有两种实现方式，基于 xml 配置文件的方式和注解方式（在类上添加 @Transaction 注解）。
+编码方式：提供编码的形式管理和维护事务。
+
+#### 说一下 spring 的事务隔离？
+spring 有五大隔离级别，默认值为 `ISOLATION_DEFAULT`（使用数据库的设置），其他四个隔离级别和数据库的隔离级别一致：
+
+`ISOLATION_DEFAULT`：用底层数据库的设置隔离级别，数据库设置的是什么我就用什么；
+
+`ISOLATIONREADUNCOMMITTED`：未提交读，最低隔离级别、事务未提交前，就可被其他事务读取（会出现幻读、脏读、不可重复读）；
+
+`ISOLATIONREADCOMMITTED`：提交读，一个事务提交后才能被其他事务读取到（会造成幻读、不可重复读），SQL server 的默认级别；
+
+`ISOLATIONREPEATABLEREAD`：可重复读，保证多次读取同一个数据时，其值都和事务开始时候的内容是一致，禁止读取到别的事务未提交的数据（会造成幻读），MySQL 的默认级别；
+
+`ISOLATION_SERIALIZABLE`：序列化，代价最高最可靠的隔离级别，该隔离级别能防止脏读、不可重复读、幻读。
+
+**脏读** ：表示一个事务能够读取另一个事务中还未提交的数据。比如，某个事务尝试插入记录 A，此时该事务还未提交，然后另一个事务尝试读取到了记录 A。
+
+**不可重复读** ：是指在一个事务内，多次读同一数据。
+
+**幻读** ：指同一个事务内多次查询返回的结果集不一样。比如同一个事务 A 第一次查询时候有 n 条记录，但是第二次同等条件下查询却有 n+1 条记录，这就好像产生了幻觉。发生幻读的原因也是另外一个事务新增或者删除或者修改了第一个事务结果集里面的数据，同一个记录的数据内容被修改了，所有数据行的记录就变多或者变少了。
+
+#### 说一下 spring mvc 运行流程？
+- spring mvc 先将请求发送给 DispatcherServlet。
+- DispatcherServlet 查询一个或多个 HandlerMapping，找到处理请求的 Controller。
+- DispatcherServlet 再把请求提交到对应的 Controller。
+- Controller 进行业务逻辑处理后，会返回一个ModelAndView。
+- Dispathcher 查询一个或多个 ViewResolver 视图解析器，找到 ModelAndView 对象指定的视图对象。
+视图对象负责渲染返回给客户端。
+
+#### spring mvc 有哪些组件？
+- 前置控制器 DispatcherServlet。
+- 映射控制器 HandlerMapping。
+- 处理器 Controller。
+- 模型和视图 ModelAndView。
+- 视图解析器 ViewResolver。
+
+#### @Autowired 的作用是什么？
+`@Autowired` 它可以对类成员变量、方法及构造函数进行标注，完成自动装配的工作，通过@Autowired 的使用来消除 set/get 方法。
+
+#### jpa 和 hibernate 有什么区别？
+jpa 全称 Java Persistence API，是 Java 持久化接口规范，hibernate 属于 jpa 的具体实现。
+
+#### 什么是 spring cloud？
+spring cloud 是一系列框架的有序集合。它利用 spring boot 的开发便利性巧妙地简化了分布式系统基础设施的开发，如服务发现注册、配置中心、消息总线、负载均衡、断路器、数据监控等，都可以用 spring boot 的开发风格做到一键启动和部署。
+
+#### spring cloud 断路器的作用是什么？
+在分布式架构中，断路器模式的作用也是类似的，当某个服务单元发生故障（类似用电器发生短路）之后，通过断路器的故障监控（类似熔断保险丝），向调用方返回一个错误响应，而不是长时间的等待。这样就不会使得线程因调用故障服务被长时间占用不释放，避免了故障在分布式系统中的蔓延。
+
+#### spring cloud 的核心组件有哪些？
+- Eureka：服务注册于发现。
+- Feign：基于动态代理机制，根据注解和选择的机器，拼接请求 url 地址，发起请求。
+- Ribbon：实现负载均衡，从一个服务的多台机器中选择一台。
+- Hystrix：提供线程池，不同的服务走不同的线程池，实现了不同服务调用的隔离，避免了服务雪崩的问题。
+- Zuul：网关管理，由 Zuul 网关转发请求给对应的服务。
+
+#### Hibernate
+
+##### 为什么要使用 hibernate？
+hibernate 是对 jdbc 的封装，大大简化了数据访问层的繁琐的重复性代码。
+
+hibernate 是一个优秀的 ORM 实现，很多程度上简化了 DAO 层的编码功能。
+
+可以很方便的进行数据库的移植工作。
+
+提供了缓存机制，程序执行更改的高效。
+
+##### hibernate 中如何在控制台查看打印的 SQL 语句？
+在 Config 里面把 hibernate. show_SQL 设置为 true 就可以。但不建议开启，开启之后会降低程序的运行效率。
+
+##### hibernate 有几种查询方式？
+三种：hql、原生 SQL、条件查询 Criteria。
+
+##### 在 hibernate 中使用 Integer 和 int 做映射有什么区别？
+Integer 类型为对象，它的值允许为 null，而 int 属于基础数据类型，值不能为 null。
+
+##### hibernate 是如何工作的？
+- 读取并解析配置文件。
+- 读取并解析映射文件，创建 SessionFactory。
+- 打开 Session。
+- 创建事务。
+- 进行持久化操作。
+- 提交事务。
+- 关闭 Session。
+- 关闭 SessionFactory。
+
+##### get()和 load()的区别？
+数据查询时，没有 OID 指定的对象，get() 返回 null；load() 返回一个代理对象。
+load()支持延迟加载；get() 不支持延迟加载。
+
+##### 说一下 hibernate 的缓存机制？
+hibernate 常用的缓存有一级缓存和二级缓存：
+
+一级缓存：也叫 Session 缓存，只在 Session 作用范围内有效，不需要用户干涉，由 hibernate 自身维护，可以通过：evict(object)清除 object 的缓存；clear()清除一级缓存中的所有缓存；flush()刷出缓存；
+
+二级缓存：应用级别的缓存，在所有 Session 中都有效，支持配置第三方的缓存，如：EhCache。
+
+##### hibernate 对象有哪些状态？
+临时/瞬时状态：直接 new 出来的对象，该对象还没被持久化（没保存在数据库中），不受 Session 管理。
+持久化状态：当调用 Session 的 save/saveOrupdate/get/load/list 等方法的时候，对象就是持久化状态。
+游离状态：Session 关闭之后对象就是游离状态。
+
+##### 在 hibernate 中 getCurrentSession 和 openSession 的区别是什么？
+getCurrentSession 会绑定当前线程，而 openSession 则不会。
+getCurrentSession 事务是 Spring 控制的，并且不需要手动关闭，而 openSession 需要我们自己手动开启和提交事务。
+
+##### hibernate 实体类必须要有无参构造函数吗？为什么？
+hibernate 中每个实体类必须提供一个无参构造函数，因为 hibernate 框架要使用 reflection api，通过调用 ClassnewInstance() 来创建实体类的实例，如果没有无参的构造函数就会抛出异常。
+
 
 <disqus />
