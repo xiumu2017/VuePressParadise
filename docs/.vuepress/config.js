@@ -1,7 +1,7 @@
 ﻿const utils = require('./utils')
 
 console.log(">>> start vue pressing... ");
-// console.log(JSON.stringify(utils.inferSiderbars()));
+console.log(JSON.stringify(utils.inferSiderbars()));
 
 module.exports = {
   host: '0.0.0.0', // 指定 dev server 的主机名
@@ -35,14 +35,22 @@ module.exports = {
       {
         text: 'Tools',
         items: [
-          { text : 'ProcessOn', link: 'https://www.processon.com/view/5ce2125de4b00446dc6b133b'},
-          { text : '幕布', link: 'https://mubu.com/doc/bU5zO0Fos6'},
-          { text : '滴答清单', link: 'https://dida365.com/#q/all/tasks'},
-          { text : '极客时间', link: 'https://account.geekbang.org/dashboard/buy'},
+          { text: 'ProcessOn', link: 'https://www.processon.com/view/5ce2125de4b00446dc6b133b' },
+          { text: '幕布', link: 'https://mubu.com/doc/bU5zO0Fos6' },
+          { text: '滴答清单', link: 'https://dida365.com/#q/all/tasks' },
+          { text: '极客时间', link: 'https://account.geekbang.org/dashboard/buy' },
         ]
       }
     ],
-    sidebar: utils.inferSiderbars(),
+    // sidebar: utils.inferSiderbars(),
+    sidebar: {
+      "/yuque/": [{ "title": "语雀", "children": [""], "collapsable": true }],
+      "/java/": [{
+        "title": "Java",
+        "children": ["", "interview", "java", "jk-java", "mybatis", "hibernate", "JVM", "Kafka", "mysql", "rabbitMQ", "redis", "spring", "think-in-java"], "collapsable": true
+      }],
+      "/life/": [{ "title": "生活", "children": ["", "fish", "hf", "nj"], "collapsable": true }]
+    },
     lastUpdated: 'Last Updated', // string | boolean
     repo: 'xiumu2017/VuePressParadise',
     repoLabel: 'GitHub',
@@ -50,7 +58,7 @@ module.exports = {
     editLinks: true,
     editLinkText: '帮助我完善此页面内容！',
     sidebarDepth: 1,
-    displayAllHeaders: true // 默认值：false
+    displayAllHeaders: false // 默认值：false 显示所有页面的标题链接 
   },
   markdown: {
     lineNumbers: true,

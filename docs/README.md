@@ -14,20 +14,29 @@ features:
 footer: MIT Licensed | Copyright © 2019-5-23 Paradise
 ---
 
+::: warning
+首页动图来自：[即刻App] Be社区 法国插画师Guillaume Kurkdjian
+:::
+
 ::: tip
 最近在做什么
 
-- [深入拆解Tomcat & Netty](https://www.yuque.com/docs/share/f2635288-cc22-4b5c-8e3b-250ad81bff1e)
 - [系统性回顾Java学习](/java/)
+- [并发编程学习]()
 - [深入理解计算机系统](https://www.yuque.com/docs/share/4bd6f76b-0a41-4115-8ca4-6daeb68835b1)
-- 整理博客，文档，梳理计划
+- [深入拆解Tomcat & Netty](https://www.yuque.com/docs/share/f2635288-cc22-4b5c-8e3b-250ad81bff1e)
 - ...
 
 :::
 
 
-::: warning
+:::danger
 
-首页动图来自：[即刻App] Be社区 法国插画师Guillaume Kurkdjian 
-/image/g1.gif
+@TODO
+
+1. 侧边栏配置，文章排序，回到顶部插件
+2. 自定义主题，丰富色彩
+3. TimeScheduler Project init...
+4. ...
+
 :::
