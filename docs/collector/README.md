@@ -6,7 +6,11 @@
 
 ### VuePress
 
-Vue 驱动的静态网站生成器。
+[VuePress官方文档](https://vuepress.vuejs.org/zh/)
+
+Vue 驱动的静态网站生成器。可以简单的理解为把md格式的文档渲染成HTML页面。
+
+
 
 ### Github GitPages
 
