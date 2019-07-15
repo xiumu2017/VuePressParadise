@@ -4,9 +4,8 @@
 
 ## 主要任务
 
-1. 准备Java面试，并发，容器，Spring等重点突击；
-    阅读《程序员面试笔试宝典》；网上教程等
-2. 系统性学习巩固Java基础，《Thinking in Java》
+1. 准备Java面试，并发，容器，Spring等重点复习；阅读《程序员面试笔试宝典》；收集整理网上教程等
+2. 系统性学习巩固Java基础，《Thinking in Java》，并发编程深入
 3. Java进阶，《Effective Java》，极客时间专栏-Java核心技术36讲
 4. Java进阶，数据结构，深入理解JVM，配合相关专栏
 5. 中间件，常用框架源码学习，Tomcat，Jetty，Spring等

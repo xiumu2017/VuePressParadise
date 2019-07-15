@@ -172,3 +172,257 @@ spring cloud 是一系列框架的有序集合。它利用 spring boot 的开发
 - Zuul：网关管理，由 Zuul 网关转发请求给对应的服务。
 
 :::
+
+## The History of Spring
+
+Spring 是Java 历史中很重要的组成部分。
+
+# 《Spring in Action》
+
+路线图
+
+- 第一部分：Spring框架的核心知识
+- 第二部分：使用Spring构建Web应用程序
+- 第三部分：在应用程序的后端使用Spring
+- 第四部分：Spring与其他的应用和服务的集成
+
+## 第一章： Spring 之旅
+
+### 1.1 简化 Java 开发
+
+- 基于POJO的轻量级和最小侵入式编程
+- 通过依赖注入和面向接口实现松耦合
+- 基于切面和惯例进行声明式编程
+- 通过切面和模板减少样板式代码
+
+
+#### 依赖注入 DI
+
+构造器注入  *constructor injection* 
+
+Spring 通过应用上下文 *Application Context* 装载bean的定义并把它们组装起来；
+`ClassPathXmlApplicationContext` 加载位于应用程序类路径下的一个或者多个XML配置文件
+
+
+#### 应用切面
+
+DI能够让相互协作的软件组织保持松散耦合，而 **面向切面编程** （AOP,aspect-oriented programming）允许你把遍布应用各处的功能分离出来形成可重用的组件。
+
+> 们可以把切面想象为覆盖在很多组件之上的一个外壳。应用是由那些实现各自业务功能的模块组成的。借助AOP，可以使用各种功能层去包裹核心业务层。这些层以声明的方式灵活地应用到系统中，你的核心应用甚至根本不知道它们的存在。这是一个非常强大的理念，可以**将安全、事务和日志关注点与核心业务逻辑相分离**。
+
+#### 使用模板消除样式代码
+
+exp. JdbcTemplate
+
+### 1.2 容纳你的Bean
+
+在Spring 应用中，对象由 Spring 容器创建和装配，并存在容器之中
+
+> Spring自带了多个容器实现，可以归为两 种不同的类型。  
+bean工厂（由`org.springframework.beans.factory.BeanFactory`接口定义）是最简单的容器，提供基本的DI支持。  
+应用上下文（由`org.springframework.context.ApplicationContext`接口定义）基于BeanFactory构建，并提供应用框架级别的服务，例如从属性文件解析文本信息以及发布应用事件给感兴趣的事件监听者。
+
+#### 使用应用上下文 Application Context
+
+> Spring自带了多种类型的应用上下文。  
+- AnnotationConfigApplicationContext：从一个或多个基于 Java的配置类中加载Spring应用上下文。   
+- AnnotationConfigWebApplicationContext：从一个或多个基 于Java的配置类中加载Spring Web应用上下文。 
+- ClassPathXmlApplicationContext：从类路径下的一个或多个 XML配置文件中加载上下文定义，把应用上下文的定义文件作为 类资源。 
+- FileSystemXmlapplicationcontext：从文件系统下的一个或多 个XML配置文件中加载上下文定义。 
+- XmlWebApplicationContext：从Web应用下的一个或多个XML 配置文件中加载上下文定义。
+
+#### bean 的生命周期
+
+> 在传统的Java应用中，bean的生命周期很简单。使用Java关键字new进行 bean实例化，然后该bean就可以使用了。一旦该bean不再被使用，则由 Java自动进行垃圾回收。 
+
+1. Spring对bean进行实例化； 
+2. Spring将值和bean的引用注入到bean对应的属性中； 
+3. 如果bean实现了BeanNameAware接口，Spring将bean的ID传递给 setBean-Name()方法； 
+4. 如果bean实现了BeanFactoryAware接口，Spring将调 用setBeanFactory()方法，将BeanFactory容器实例传入； 
+5. 如果bean实现了ApplicationContextAware接口，Spring将调 用setApplicationContext()方法，将bean所在的应用上下文的引用 传入进来；
+6. 如果bean实现了BeanPostProcessor接口，Spring将调用它们的 post-ProcessBeforeInitialization()方法；
+7. 如果bean实现了InitializingBean接口，Spring将调用它们的 after-PropertiesSet()方法。类似地，如果bean使用init-method 声明了初始化方法，该方法也会被调用；
+8. 如果bean实现了BeanPostProcessor接口，Spring将调用它们的 post-ProcessAfterInitialization()方法； 
+9. 此时，bean已经准备就绪，可以被应用程序使用了，它们将一直驻留在应用上下文中，直到该应用上下文被销毁；
+10. 如果bean实现了DisposableBean接口，Spring将调用它的destroy()接口方法。同样，如果bean使用destroy-method声明了销毁方法，该方法也会被调用。
+
+### 1.3 俯瞰 Spring 风景线
+
+Spring 核心容器
+面向切面编程
+数据访问与集成
+Web与远程调用
+instrument
+测试Test
+
+## 第二章 装配Bean
+
+### 2.1 Spring 配置的可选方案
+
+三种主要的装配机制： 
+- 在XML中进行显式配置
+- 在Java中进行显式配置
+- 隐式的bean发现机制和自动装配
+
+### 2.2 自动化转配Bean
+
+Spring从两个角度来实现自动化装配：
+- 组件扫描（component scanning）：Spring会自动发现应用上下文中所创建的bean。
+- 自动装配（autowiring）：Spring自动满足bean之间的依赖。
+
+@Component
+
+@Configuration
+@Configuration注解表明这个类是一个配置类，该类应该包含在 Spring应用上下文中如何创建bean的细节。 
+
+@ComponentScan 注解启用了组件扫描
+
+可以考虑在包中创建一个用来进行扫描的空标记接口（marker interface）。通过标记接口的方式，能够保持对重构友好的接口引用，但是可以避免引用任何实际的应用程序代码（在稍后重构中，这些应用代码有可能会从想要扫描的包中移除掉）。
+
+> Spring应用上下文中所有的bean都会给定一个ID。但Spring会根据类名为其指定一个ID，也就是将类名的第一个字母变为小写。如果想为这个bean设置不同的ID，你所要做的就是将期望的ID作为值传递给@Component注解。
+
+@Autowired 自动装配  
+不管是构造器、Setter方法还是其他的方法，Spring都会尝试满足方法参数上所声明的依赖。假如有且只有一个bean匹配依赖需求的话，那么这个bean将会被装配进来。 如果有多个bean都能满足依赖关系的话，Spring将会抛出一个异常，表明没有明确指定要选择哪个bean进行自动装配。
+
+@Inject注解来源于Java依赖注入规范，该规范同时还为我们定义了 @Named注解。在自动装配中，Spring同时支持@Inject和 @Autowired。尽管@Inject和@Autowired之间有着一些细微的差别， 但是在大多数场景下，它们都是可以互相替换的。
+
+### 2.3 通过Java代码装配bean
+
+@Bean  
+注解会告诉Spring这个方法将会返回一个对象，该对象要注册为 Spring应用上下文中的bean。方法体中包含了最终产生bean实例的逻辑。
+
+默认情况下，bean的ID与带有@Bean注解的方法名是一样的。想为其设置成一个不同的名字的话，那么可以重命名该方法，也可以通过name属性指定一个不同的名字。
+
+带有@Bean注解的方法可以采用任何必要的Java功能来产生bean实例。构造器和Setter方法只是@Bean方法的两个简单样例。这 里所存在的可能性仅仅受到Java语言的限制。
+
+### 2.4 通过XML装配bean
+
+```
+<beans>
+<bean>
+<list>
+<set>
+<value>
+<property>
+```
+
+### 2.5 导入和混合配置
+
+#### 在 JavaConfig 中引用XML配置
+
+@Import  
+@ImportResource
+
+#### 在 XML 配置中引用 JavaConfig
+
+`<import>`
+
+
+### 2.6 小结
+
+建议尽可能使用自动化配置，以避免显式配置所带来的维护成本。但是，如果你确实需要显式配置Spring的话，应该优先选择基于Java的配置，它比基于XML的配置更加强大、类型安全并且易于重构。 
+
+## 第三章 高级装配
+
+- Spring profile
+- 条件化的bean声明
+- 自动装配与歧义性
+- bean 的 作用域
+- Spring 表达式语言
+
+### 3.1 环境与 profile
+
+在Java配置中，可以使用@Profile注解指定某个bean属于哪一个profile
+`@Profile("dev")`
+
+Spring在确定哪个profile处于激活状态时，需要依赖两个独立的属性：
+- `spring.profiles.active`
+- `spring.profiles.default`
+如果设置了 `spring.profiles.active` 属性的话，那么它的值就会用来确定哪个profile是激活的。  
+但如果没有设置`spring.profiles.active` 属性的话，那Spring将会查找`spring.profiles.default` 的值。
+如果 `spring.profiles.active`和 `spring.profiles.default` 均没有设置的话，那就没有激活的profile，因此只会创建那些没有定义在profile中的bean。
+
+有多种方式来设置这两个属性：
+- 作为DispatcherServlet的初始化参数；
+- 作为Web应用的上下文参数； 
+- 作为JNDI条目； 
+- 作为环境变量； 
+- 作为JVM的系统属性； 
+- 在集成测试类上，使用 `@ActiveProfiles` 注解设置。
+
+### 3.2 条件化的 bean
+
+Spring 4 引入了 一个新的 `@Conditional` 注解，它可以用到带有@Bean注解的方法上。  
+如果给定的条件计算结果为true，就会创建这个bean，否则的话，这个 bean会被忽略。 
+
+设置给`@Conditional` 的类可以是任意实现了 `Condition接口` 的类型。 
+可以看出来，这个接口实现起来很简单直接，只需提供matches()方法的实现即可。
+
+```java
+public interface Condition {    
+    boolean matches(ConditionContext ctxt, AnnotatedTypeMetadata metadata); 
+}
+```
+
+通过ConditionContext，我们可以做到如下几点： 
+- 借助getRegistry()返回的BeanDefinitionRegistry检查bean定义； 
+- 借助getBeanFactory()返回的 ConfigurableListableBeanFactory检查bean是否存在，甚至探查bean的属性； 
+- 借助getEnvironment()返回的Environment检查环境变量是否存在以及它的值是什么； 
+- 读取并探查getResourceLoader()返回的ResourceLoader所加载的资源； 
+- 借助getClassLoader()返回的ClassLoader加载并检查类是否存在。
+
+`AnnotatedTypeMetadata` 则能够让我们检查带有 `@Bean` 注解的方法上 还有什么其他的注解。
+像ConditionContext一 样，AnnotatedTypeMetadata也是一个接口。
+
+```java
+public interface AnnotatedTypeMetadata {  
+
+    boolean isAnnotated(String annotationType);  
+
+    Map<String, Object> getAnnotationAttributes(String annotationType);  
+
+    Map<String, Object> getAnnotationAttributes(String annotationType, boolean classValuesAsString);  
+
+    MultiValueMap<String, Object> getAllAnnotationAttributes(String annotationType);  
+
+    MultiValueMap<String, Object> getAllAnnotationAttributes(String annotationType, boolean classValuesAsString); 
+}
+
+```
+
+非常有意思的是，从Spring 4开始，`@Profile` 注解进行了重构，使其基于 `@Conditional` 和 `Condition` 实现。
+
+### 3.3 处理自动装配的歧义性
+
+`NoUniqueBeanDefinitionException`
+
+将可选bean中的某一个设为首选（primary）的bean，或者使用限定符（qualifier）来帮助Spring将可选的bean的范围缩小到只有一个bean。 
+
+在Spring中，可以通过 `@Primary` 来表达最喜欢的方案。  
+`@Primary` 能够与 `@Component` 组合用在组件扫描的bean上，也可以与 `@Bean` 组合用在Java配置的bean声明中。
+
+`@Qualifier` 注解是使用限定符的主要方式。  
+它可以与 `@Autowired` 和 `@Inject` 协同使用，在注入的时候指定想要注入进去的是哪个bean。  
+
+```java
+
+@Autowired
+@Qualifier("iceCream") 
+public void setDessert(Dessert dessert) {
+    this.dessert = dessert; 
+}
+
+```
+
+为了创建自定义的条件化注解，我们创建一个新的注解并在这个注解上添加了 `@Conditional`。  
+为了创建自定义的限定符注解，我们创建一个新的注解并在这个注解上添加了`@Qualifier`。  
+这种技术可以用到很多的Spring注解中，从而能够将它们组合在一起形成特定目标的自定义注解。  
+
+
+### 3.4 bean 的作用域
+
+Spring定义了多种作用域，可以基于这些作用域创建bean，包括： 
+- 单例（Singleton）：在整个应用中，只创建bean的一个实例。
+- 原型（Prototype）：每次注入或者通过Spring应用上下文获取的时候，都会创建一个新的bean实例。 
+- 会话（Session）：在Web应用中，为每个会话创建一个bean实例。 
+- 请求（Rquest）：在Web应用中，为每个请求创建一个bean实例。
