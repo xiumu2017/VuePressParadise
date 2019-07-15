@@ -248,14 +248,14 @@ bean工厂（由`org.springframework.beans.factory.BeanFactory`接口定义）�
 
 ### 1.3 俯瞰 Spring 风景线
 
-Spring 核心容器
-面向切面编程
-数据访问与集成
-Web与远程调用
-instrument
-测试Test
+- Spring 核心容器
+- 面向切面编程
+- 数据访问与集成
+- Web与远程调用
+- instrument
+- 测试Test
 
-## 第二章 装配Bean
+## 第二章： 装配Bean
 
 ### 2.1 Spring 配置的可选方案
 
@@ -270,16 +270,16 @@ Spring从两个角度来实现自动化装配：
 - 组件扫描（component scanning）：Spring会自动发现应用上下文中所创建的bean。
 - 自动装配（autowiring）：Spring自动满足bean之间的依赖。
 
-@Component
 
-@Configuration
+@Configuration  @Component  
+
 @Configuration注解表明这个类是一个配置类，该类应该包含在 Spring应用上下文中如何创建bean的细节。 
 
 @ComponentScan 注解启用了组件扫描
 
 可以考虑在包中创建一个用来进行扫描的空标记接口（marker interface）。通过标记接口的方式，能够保持对重构友好的接口引用，但是可以避免引用任何实际的应用程序代码（在稍后重构中，这些应用代码有可能会从想要扫描的包中移除掉）。
 
-> Spring应用上下文中所有的bean都会给定一个ID。但Spring会根据类名为其指定一个ID，也就是将类名的第一个字母变为小写。如果想为这个bean设置不同的ID，你所要做的就是将期望的ID作为值传递给@Component注解。
+> Spring应用上下文中所有的bean都会给定一个ID。但Spring会根据类名为其指定一个ID，也就是将类名的第一个字母变为小写。如果想为这个bean设置不同的ID，你所要做的就是将期望的ID作为值传递给 `@Component` 注解。
 
 @Autowired 自动装配  
 不管是构造器、Setter方法还是其他的方法，Spring都会尝试满足方法参数上所声明的依赖。假如有且只有一个bean匹配依赖需求的话，那么这个bean将会被装配进来。 如果有多个bean都能满足依赖关系的话，Spring将会抛出一个异常，表明没有明确指定要选择哪个bean进行自动装配。
@@ -322,7 +322,7 @@ Spring从两个角度来实现自动化装配：
 
 建议尽可能使用自动化配置，以避免显式配置所带来的维护成本。但是，如果你确实需要显式配置Spring的话，应该优先选择基于Java的配置，它比基于XML的配置更加强大、类型安全并且易于重构。 
 
-## 第三章 高级装配
+## 第三章： 高级装配
 
 - Spring profile
 - 条件化的bean声明
@@ -332,12 +332,12 @@ Spring从两个角度来实现自动化装配：
 
 ### 3.1 环境与 profile
 
-在Java配置中，可以使用@Profile注解指定某个bean属于哪一个profile
-`@Profile("dev")`
+在Java配置中，可以使用 `@Profile` 注解指定某个bean属于哪一个profile `@Profile("dev")`
 
 Spring在确定哪个profile处于激活状态时，需要依赖两个独立的属性：
 - `spring.profiles.active`
 - `spring.profiles.default`
+
 如果设置了 `spring.profiles.active` 属性的话，那么它的值就会用来确定哪个profile是激活的。  
 但如果没有设置`spring.profiles.active` 属性的话，那Spring将会查找`spring.profiles.default` 的值。
 如果 `spring.profiles.active`和 `spring.profiles.default` 均没有设置的话，那就没有激活的profile，因此只会创建那些没有定义在profile中的bean。
@@ -352,7 +352,7 @@ Spring在确定哪个profile处于激活状态时，需要依赖两个独立的�
 
 ### 3.2 条件化的 bean
 
-Spring 4 引入了 一个新的 `@Conditional` 注解，它可以用到带有@Bean注解的方法上。  
+Spring 4 引入了 一个新的 `@Conditional` 注解，它可以用到带有 `@Bean` 注解的方法上。  
 如果给定的条件计算结果为true，就会创建这个bean，否则的话，这个 bean会被忽略。 
 
 设置给`@Conditional` 的类可以是任意实现了 `Condition接口` 的类型。 
@@ -364,12 +364,12 @@ public interface Condition {
 }
 ```
 
-通过ConditionContext，我们可以做到如下几点： 
-- 借助getRegistry()返回的BeanDefinitionRegistry检查bean定义； 
-- 借助getBeanFactory()返回的 ConfigurableListableBeanFactory检查bean是否存在，甚至探查bean的属性； 
-- 借助getEnvironment()返回的Environment检查环境变量是否存在以及它的值是什么； 
-- 读取并探查getResourceLoader()返回的ResourceLoader所加载的资源； 
-- 借助getClassLoader()返回的ClassLoader加载并检查类是否存在。
+通过 `ConditionContext` ，我们可以做到如下几点： 
+- 借助 `getRegistry()` 返回的 `BeanDefinitionRegistry` 检查bean定义； 
+- 借助 `getBeanFactory()` 返回的 `ConfigurableListableBeanFactory` 检查bean是否存在，甚至探查bean的属性； 
+- 借助 `getEnvironment()` 返回的 `Environment` 检查环境变量是否存在以及它的值是什么； 
+- 读取并探查 `getResourceLoader()` 返回的 `ResourceLoader` 所加载的资源； 
+- 借助 `getClassLoader()` 返回的 `ClassLoader` 加载并检查类是否存在。
 
 `AnnotatedTypeMetadata` 则能够让我们检查带有 `@Bean` 注解的方法上 还有什么其他的注解。
 像ConditionContext一 样，AnnotatedTypeMetadata也是一个接口。
@@ -421,8 +421,234 @@ public void setDessert(Dessert dessert) {
 
 ### 3.4 bean 的作用域
 
+> 在默认情况下，Spring应用上下文中所有bean都是作为以单例 （singleton）的形式创建的。
+也就是说，不管给定的一个bean被注入到其他bean多少次，每次所注入的都是同一个实例。
+
 Spring定义了多种作用域，可以基于这些作用域创建bean，包括： 
 - 单例（Singleton）：在整个应用中，只创建bean的一个实例。
 - 原型（Prototype）：每次注入或者通过Spring应用上下文获取的时候，都会创建一个新的bean实例。 
 - 会话（Session）：在Web应用中，为每个会话创建一个bean实例。 
 - 请求（Rquest）：在Web应用中，为每个请求创建一个bean实例。
+
+`@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)`
+
+**使用会话和请求作用域**
+
+`@Scope(value=WebApplicationContext.SCOPE_SESSION, proxyMode=ScopedProxyMode.INTERFACES) `
+proxyMode属性被设置成了 `ScopedProxyMode.INTERFACES` ，
+这表明这个代理要实现 `ShoppingCart` 接口，并将调用委托给实现bean。
+
+如果ShoppingCart是接口而不是类的话，这是可以的（也是最为理想的代理模式）。  
+但如果ShoppingCart是一个具体的类的话，Spring就没有办法创建 **基于接口的代理**了。  
+此时，它必须使用 **CGLib** 来生成基于类的代理。  
+所以，如果bean类型是具体类的话，我们必须要将proxyMode属性设置为
+`ScopedProxyMode.TARGET_CLASS` ，以此来表明要以生成目标类扩展的方式创建代理。
+
+### 3.5 运行时值注入
+
+有时候硬编码是可以的，但有的时候，我们可能会希望避免硬编码值， 而是想让这些值在运行时再确定。  
+为了实现这些功能，Spring提供了两种在运行时求值的方式：
+- 属性占位符（Property placeholder）
+- Spring表达式语言（SpEL）
+
+很快你就会发现这两种技术的用法是类似的，不过它们的目的和行为是有所差别的。
+
+使用 `@PropertySource` 注解和 `Environment`
+
+```java
+String getProperty(String key) 
+String getProperty(String key, String defaultValue) 
+T getProperty(String key, Class<T> type) 
+T getProperty(String key, Class<T> type, T defaultValue)
+
+getRequiredProperty() IllegalStateException
+
+// 检查一下某个属性是否存在
+boolean containsProperty();
+
+// 将属性解析为类的话
+getPropertyAsClass();
+
+// Environment还提供了一些方法来检查哪些 profile处于激活状态： 
+// 返回激活profile名称的数组； 
+String[] getActiveProfiles()
+// 返回默认profile名称的数组； 
+String[] getDefaultProfiles()
+// 如果 environment支持给定profile的话，就返回true。
+boolean acceptsProfiles(String... profiles);
+
+```
+`@Value("${...}")`
+为了使用占位符，我们必须要配置一个 `PropertyPlaceholderConfigurer` bean 或 `PropertySourcesPlaceholderConfigurer` bean。  
+从Spring 3.1开始，推荐使用 `PropertySourcesPlaceholderConfigurer`，因为它能 够基于Spring Environment及其属性源来解析占位符。  
+
+如下的@Bean方法在Java中配置
+```java
+@Bean 
+public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+      return new PropertySourcesPlaceholderConfigurer(); 
+}
+```
+
+#### 3.5.2 使用Spring 表达式语言进行装配
+
+Spring 3 引入了Spring表达式语言（Spring Expression Language， SpEL），
+它能够以一种强大和简洁的方式将值装配到bean属性和构造器参数中，在这个过程中所使用的表达式会在运行时计算得到值。
+使用 SpEL，你可以实现超乎想象的装配效果，这是使用其他的装配技术难以做到的（甚至是不可能的）。
+
+SpEL拥有很多特性，包括： 
+- 使用bean的ID来引用bean； 
+- 调用方法和访问对象的属性； 
+- 对值进行算术、关系和逻辑运算； 
+- 正则表达式匹配； 
+- 集合操作。
+
+```java
+// #{1} 
+// #{T(System).currentTimeMillis()}
+// #{sgtPeppers.artist} 
+// #{systemProperties['disc.title']}
+
+
+```
+
+:::warning
+扩展学习 spel 详细语法
+:::
+
+### 3.6 小结
+
+:::tip 
+
+我们在本章介绍了许多背景知识，在第2章所介绍的基本bean装配基础 之上，又学习了一些强大的高级装配技巧。
+
+首先，我们学习了Spring profile，它解决了Spring bean要跨各种部署环境的通用问题。
+在运行时，通过将环境相关的bean与当前激活的profile 进行匹配，Spring能够让相同的部署单元跨多种环境运行，而不需要进行重新构建。
+Profile bean是在运行时条件化创建bean的一种方式，但是Spring 4提供了一种更为通用的方式，
+通过这种方式能够声明某些bean的创建与否要依赖于给定条件的输出结果。
+结合使用@Conditional注解和Spring Condition接口的实现，能够为开发人员提供一种强大和灵活的机制，实现条件化地创建bean。 
+
+我们还看了两种解决自动装配歧义性的方法：首选bean以及限定符。尽管将某个bean设置为首选bean是很简单的，但这种方式也有其局限性，所以我们讨论了如何将一组可选的自动装配bean，借助限定符将其范围 缩小到只有一个符合条件的bean。
+
+除此之外，我们还看到了如何创建自定义的限定符注解，这些限定符描述了bean的特性。 
+
+尽管大多数的Spring bean都是以单例的方式创建的，但有的时候其他的创建策略更为合适。Spring能够让bean以单例、原型、请求作用域或会话作用域的方式来创建。
+
+在声明请求作用域或会话作用域的bean的时候，我们还学习了如何创建作用域代理，它分为基于类的代理和基于接口的代理的两种方式。
+
+最后，我们学习了Spring表达式语言，它能够在运行时计算要注入到 bean属性中的值。 
+
+:::
+
+## 第四章： 面向切面的Spring
+
+本章内容：
+- 面向切面编程的基本原理
+- 通过POJO创建切面
+- 使用@AspectJ注解
+- 为AspectJ切面注入依赖
+
+> 在软件开发中，散布于应用中多处的功能被称为横切关注点（crosscutting concern）。通常来讲，这些横切关注点从概念上是与应用的业务
+逻辑相分离的（但是往往会直接嵌入到应用的业务逻辑之中）。把这些横切关注点与业务逻辑相分离正是面向切面编程（AOP）所要解决的问题。
+
+
+定义AOP术语，通知advice、切点pointcut、连接点join point。
+
+- 前置通知 before
+- 后置通知 after
+- 返回通知 after-returning
+- 异常通知 after-throwing
+- 环绕通知 around
+
+引入 introduction
+
+织入 weaving
+
+织入是把切面应用到目标对象并创建新的代理对象的过程。
+
+切面在指定的连接点被织入到目标对象中。在目标对象的生命周期里有多个点可以进行织入：
+
+- 编译期：切面在目标类编译时被织入。这种方式需要特殊的编译器。AspectJ的织入编译器就是以这种方式织入切面的。 
+- 类加载期：切面在目标类加载到JVM时被织入。这种方式需要特殊的类加载器（ClassLoader），它可以在目标类被引入应用之前增强该目标类的字节码。AspectJ5的加载时织入（load-time weaving，LTW）就支持以这种方式织入切面。 
+- 运行期：切面在应用运行的某个时刻被织入。一般情况下，在织入切面时，AOP容器会为目标对象动态地创建一个代理对象。Spring AOP就是以这种方式织入切面的。 
+
+Spring提供了4种类型的AOP支持： 
+- 基于代理的经典Spring AOP；
+- 纯POJO切面； 
+- @AspectJ注解驱动的切面； 
+- 注入式AspectJ切面（适用于Spring各版本）。 
+
+**Spring在运行时通知对象**
+
+通过在代理类中包裹切面，Spring在运行期把切面织入到Spring管理的bean中。
+代理类封装了目标类，并拦截被通知方法的调用，再把调用转发给真正的目标bean。
+当代理拦截到方法调用时，在调用目标bean方法之前，会执行切面逻辑。
+
+> Spring的切面由包裹了目标对象的代理类实现。 代理类处理方法的调用，执行额外的切面逻辑，并调用目标方法。
+
+### 4.2 通过切点来选择连接点
+
+关于Spring AOP的AspectJ切点，最重要的一点就是Spring仅支持AspectJ 切点指示器（pointcut designator）的一个子集。
+
+`"execution(* com.woyi.mas..dao.*Mapper.*ByPage(..))`
+
+@Pointcut注解能够在一个@AspectJ切 面内定义可重用的切点
+
+|注　　解 | 通　　知 |
+|---| --- |
+|@After | 通知方法会在目标方法返回或抛出异常后调用|
+|@AfterReturning | 通知方法会在目标方法返回后调用|
+|@AfterThrowing | 通知方法会在目标方法抛出异常后调用|
+|@Around | 通知方法会将目标方法封装起来|
+|@Before | 通知方法会在目标方法调用之前执行|
+
+可以在**配置类的类级别上**通过使用 `EnableAspectJ-AutoProxy` 注解启用自动代理功能。
+
+**创建环绕通知**
+
+环绕通知是最为强大的通知类型。它能够让你所编写的逻辑将被通知的 目标方法完全包装起来。实际上就像在一个通知方法中同时编写前置通知和后置通知。
+
+它接受 `ProceedingJoinPoint` 作为参数。这个对象是必须要有的，因为你要在通知中通过它来调用被通知的方法。
+通知方法中可以做任何的事情，当要将控制权交给被通知的方法时，它需要调用 `ProceedingJoinPoint` 的 `proceed()` 方法。 
+
+使用Spring AOP，我们可以为bean引入新的方法。 代理拦截调用并委托给实现该方法的其他对象。
+
+```java
+@Aspect 
+public class EncoreableIntroducer {
+    @DeclareParents(value="concert.Performance+", defaultImpl=DefaultEncoreable.class)  
+    public static Encoreable encoreable;
+}
+```
+
+可以看到，`EncoreableIntroducer` 是一个切面。
+但是，它与我们之前 所创建的切面不同，它并没有提供前置、后置或环绕通知，
+而是通过 `@DeclareParents` 注解，将 `Encoreable` 接口引入到 `Performance` bean 中。
+
+`@DeclareParents` 注解由三部分组成： 
+- value属性指定了哪种类型的bean要引入该接口。在本例中，也就是所有实现Performance的类型。（标记符后面的加号表示是Performance的所有子类型，而不是Performance本身） 
+- defaultImpl属性指定了为引入功能提供实现的类。在这里，我们 指定的是 `DefaultEncoreable` 提供实现。
+- `@DeclareParents` 注解所标注的静态属性指明了要引入了接口。 在这里，我们所引入的是 `Encoreable` 接口。 
+
+:::danger
+在本书前面的内容中，我曾经建立过这样一种原则，
+那就是基于注解的配置要优于基于Java的配置，
+基于Java的配置要优于基于XML的配置。 
+但是，如果你需要声明切面，但是又不能为通知类添加注解的时候，那么就必须转向XML配置了。 
+:::
+
+### 4.5 注入 AspectJ 切面
+
+### 4.6 小结
+
+AOP是面向对象编程的一个强大补充。通过AspectJ，我们现在可以把之前分散在应用各处的行为放入可重用的模块中。我们显示地声明在何处如何应用该行为。这有效减少了代码冗余，并让我们的类关注自身的主要功能。
+
+Spring提供了一个AOP框架，让我们把切面插入到方法执行的周围。现在我们已经学会如何把通知织入前置、后置和环绕方法的调用中，以及为处理异常增加自定义的行为。
+
+关于在Spring应用中如何使用切面，我们可以有多种选择。通过使用 `@AspectJ` 注解和简化的配置命名空间，在Spring中装配通知和切点变得非常简单。
+
+最后，当Spring AOP不能满足需求时，我们必须转向更为强大的 AspectJ。对于这些场景，我们了解了如何使用Spring为AspectJ切面注入依赖。
+
+---
+
+## 第五章： 构建 Spring Web 应用程序
