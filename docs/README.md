@@ -22,7 +22,9 @@ footer: MIT Licensed | Copyright © 2019-5-23 Paradise
 最近在做什么
 
 - [系统性回顾Java学习](/java/)
-- [并发编程学习]()
+  - [Spring 实战学习](/java/spring)
+  - [并发编程学习](//)
+  - [JVM虚拟机学习](/java/JVM)
 - [深入理解计算机系统](https://www.yuque.com/docs/share/4bd6f76b-0a41-4115-8ca4-6daeb68835b1)
 - [深入拆解Tomcat & Netty](https://www.yuque.com/docs/share/f2635288-cc22-4b5c-8e3b-250ad81bff1e)
 - ...
