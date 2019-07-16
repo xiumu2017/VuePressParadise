@@ -47,7 +47,7 @@ module.exports = {
       "/yuque/": [{ "title": "语雀", "children": [""], "collapsable": true }],
       "/java/": [{
         "title": "Java",
-        "children": ["", "interview", "java", "jk-java", "mybatis", "hibernate", "JVM", "Kafka", "mysql", "rabbitMQ", "redis", "spring", "think-in-java"], "collapsable": true
+        "children": ["", "interview", "java", "concurrent", "jk-java", "mybatis", "hibernate", "JVM", "Kafka", "mysql", "rabbitMQ", "redis", "spring", "think-in-java"], "collapsable": true
       }],
       "/life/": [{ "title": "生活", "children": ["", "fish", "hf", "nj"], "collapsable": true }]
     },
