@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: https://cdn.nlark.com/yuque/0/2019/gif/159222/1561464137593-82fac4a3-87e8-42f1-8773-e87692bc86d6.gif
+heroImage: /image/g1.gif
 tagline: 菩提本无树，明镜亦非台。
 actionText: Start Explore
 actionLink: /nav

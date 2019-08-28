@@ -9,6 +9,7 @@ module.exports = {
   // dest: '.vuepress/dist', // 指定vuepress build 的目录
   // ga: 'UA-109340118-1', // 提供一个 Google Analytics ID 来使 GA 生效。
   title: 'Paradise VuePress',
+  referrer: 'no-referrer',
   description: 'Paradise Blog By VuePress',
   head: [
     // 增加一个自定义的favicon
