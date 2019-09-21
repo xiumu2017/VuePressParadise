@@ -30,10 +30,6 @@ module.exports = {
         link: '/life/'
       },
       {
-        text: 'Java',
-        link: '/java/'
-      },
-      {
         text: 'Tools',
         items: [
           { text: 'ProcessOn', link: 'https://www.processon.com/view/5ce2125de4b00446dc6b133b' },
@@ -45,11 +41,6 @@ module.exports = {
     ],
     // sidebar: utils.inferSiderbars(),
     sidebar: {
-      "/yuque/": [{ "title": "语雀", "children": [""], "collapsable": true }],
-      "/java/": [{
-        "title": "Java",
-        "children": ["", "interview", "java", "concurrent", "jk-java", "mybatis", "hibernate", "JVM", "Kafka", "mysql", "rabbitMQ", "redis", "spring", "think-in-java"], "collapsable": true
-      }],
       "/life/": [{ "title": "生活", "children": ["", "fish", "hf", "nj"], "collapsable": true }]
     },
     lastUpdated: 'Last Updated', // string | boolean
