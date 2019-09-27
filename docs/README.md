@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: /image/g1.gif
+heroImage: https://mmbiz.qpic.cn/mmbiz_gif/goFGRevYLlutp6xicnQiaByATeBeu4ThkT8Piarric7ibeaiaaeh0J80GpQ9N2DuugRtq09cOfwdAfQXEyfJrJIMAySg/0?wx_fmt=gif
 tagline: 菩提本无树，明镜亦非台。
 actionText: Start Explore
 actionLink: /nav
