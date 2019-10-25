@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: https://mmbiz.qpic.cn/mmbiz_gif/goFGRevYLlutp6xicnQiaByATeBeu4ThkT8Piarric7ibeaiaaeh0J80GpQ9N2DuugRtq09cOfwdAfQXEyfJrJIMAySg/0?wx_fmt=gif
+heroImage: https://ftp.bmp.ovh/imgs/2019/10/675bf5e848830b67.gif
 tagline: 菩提本无树，明镜亦非台。
 actionText: Start Explore
 actionLink: /nav
