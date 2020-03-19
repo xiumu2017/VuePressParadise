@@ -1,4 +1,22 @@
-# Paradise Navigation
+---
+title: Paradise Navigation
+date: 2020-3-19
+sidebar: 'auto'
+categories:
+  - 收藏
+  - starter
+tags:
+  - nav
+  - starter
+publish: true
+sticky: 1
+---
+
+:::tip
+导航栏-摘要功能测试
+Welcome to My Blog~  
+非淡泊无以明志，非宁静无以致远。
+:::
 
 [[toc]]
 

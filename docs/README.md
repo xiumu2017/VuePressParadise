@@ -1,6 +1,13 @@
 ---
 home: true
 heroImage: https://ftp.bmp.ovh/imgs/2019/10/675bf5e848830b67.gif
+heroImageStyle: {
+  maxHeight: '200px',
+  display: block,
+  margin: '6rem auto 1.5rem',
+  borderRadius: '50%',
+  boxShadow: '0 5px 18px rgba(0,0,0,0.2)'
+}
 tagline: 菩提本无树，明镜亦非台。
 actionText: Start Explore
 actionLink: /nav
@@ -10,9 +17,8 @@ features:
 footer: MIT Licensed | Copyright © 2019-5-23 Paradise
 ---
 
-::: warning
+:::warning
 首页动图来自：[即刻App] Be社区 法国插画师Guillaume Kurkdjian
 :::
-
 
 Email: dz.paradis3@gmail.com
