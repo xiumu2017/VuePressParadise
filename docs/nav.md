@@ -18,19 +18,20 @@ Welcome to My Blog~
 非淡泊无以明志，非宁静无以致远。
 :::
 
+<!-- more -->
+
 [[toc]]
 
 ## 目录
-
-### Java - 学习
-
-[Java学习](/java/)  
-Java学习路径，学习笔记，读书笔记，极客时间专栏笔记等。
 
 ### 语雀 - 知识库
 
 [Paradise 语雀](https://www.yuque.com/paradise)  
 记录工作日志，读书笔记，遇到的问题等，扮演云笔记的角色。
+
+### 2020 多读书
+
+[2020多读书](/book/)
 
 ### 掘金 - 个人主页
 
@@ -42,18 +43,10 @@ Java学习路径，学习笔记，读书笔记，极客时间专栏笔记等。
 [LeetCode](https://leetcode-cn.com/u/paradis3/)  
 数据结构刷题必备。
 
-### 牛客网
-
-[牛客网](https://www.nowcoder.com/profile/2741870)  
-面试题目刷题必备。
-
-### 博客评论功能 DISQUS
-
-[DISQUS](https://disqus.com/)  
-可惜的是需要科学上网，加载速度太慢
-
 ### Collection
 
-[😍😍😍](/collector/)
-[😍😍😍😍](/collector/site)
+[📂收藏夹](/collector/)
+
+[📑书签页]](/collector/site)
+
 <disqus/>
