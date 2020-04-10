@@ -1,12 +1,16 @@
 ---
 home: true
-heroImage: https://ftp.bmp.ovh/imgs/2019/10/675bf5e848830b67.gif
-heroImageStyle: {
-  maxHeight: '250px',
-  display: block,
-  margin: '6rem auto 1.5rem',
-  borderRadius: '50%',
-  boxShadow: '0 5px 18px rgba(0,0,0,0.2)'
+# heroImage: https://ftp.bmp.ovh/imgs/2019/10/675bf5e848830b67.gif
+# heroImageStyle: {
+#   maxHeight: '250px',
+#   display: block,
+#   margin: '6rem auto 1.5rem',
+#   borderRadius: '50%',
+#   boxShadow: '0 5px 18px rgba(0,0,0,0.2)'
+# }
+bgImage: 'https://www.baijinliuliang.com/tomdog/img/paradise-home-img.png'
+bgImageStyle: {
+  height: '600px'
 }
 tagline: 菩提本无树，明镜亦非台。
 actionText: Start Explore
@@ -15,12 +19,6 @@ features:
 - title: 
   details:
 footer: MIT Licensed | Copyright © 2019-5-23 Paradise
----
-
-#
-
-## ~
-
 ---
 
 :::tip 10_000小时 编程实践进度
