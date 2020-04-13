@@ -10,9 +10,10 @@ home: true
 # }
 bgImage: 'https://www.baijinliuliang.com/tomdog/img/paradise-home-img.png'
 bgImageStyle: {
-  height: '600px'
+  max-height: '100%',
+  max-width: '100%'
 }
-tagline: 菩提本无树，明镜亦非台。
+tagline:
 actionText: Start Explore
 actionLink: /nav
 features:
