@@ -47,6 +47,6 @@ Welcome to My Blog~
 
 [📂收藏夹](/collector/)
 
-[📑书签页]](/collector/site)
+[📑书签页](/collector/site)
 
-<disqus/>
+<!-- <disqus/> -->

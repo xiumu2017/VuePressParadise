@@ -23,33 +23,29 @@ module.exports = {
     },
     blogConfig: {
       category: {
-        location: 2,
+        location: 3,
         text: 'Category'
       },
       tag: {
-        location: 3,
+        location: 4,
         test: 'Tag'
       }
     },
     nav: [
       {
-        text: '时光机',
+        text: '',
         link: '/timeline/',
         icon: 'reco-date'
       },
       {
-        text: 'Paradise',
-        link: '/'
+        text: '',
+        link: '/book/',
+        icon: 'reco-douyin'
       },
       {
         text: '语雀',
         link: 'https://www.yuque.com/paradise',
         icon: 'reco-twitter'
-      },
-      {
-        text: '生活',
-        link: '/life/',
-        icon: 'reco-douyin'
       },
       {
         text: 'Tools',
