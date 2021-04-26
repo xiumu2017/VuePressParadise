@@ -33,12 +33,12 @@ module.exports = {
     },
     nav: [
       {
-        text: '',
+        text: '时间轴',
         link: '/timeline/',
         icon: 'reco-date'
       },
       {
-        text: '',
+        text: 'Book',
         link: '/book/',
         icon: 'reco-douyin'
       },
@@ -46,15 +46,6 @@ module.exports = {
         text: '语雀',
         link: 'https://www.yuque.com/paradise',
         icon: 'reco-twitter'
-      },
-      {
-        text: 'Tools',
-        items: [
-          { text: 'ProcessOn', link: 'https://www.processon.com/view/5ce2125de4b00446dc6b133b' },
-          { text: '幕布', link: 'https://mubu.com/doc/bU5zO0Fos6' },
-          { text: '滴答清单', link: 'https://dida365.com/#q/all/tasks' },
-          { text: '极客时间', link: 'https://account.geekbang.org/dashboard/buy' },
-        ]
       }
     ],
      // sidebar: utils.inferSiderbars(),
@@ -66,12 +57,12 @@ module.exports = {
     repoLabel: 'GitHub',
     docsDir: 'docs',
     editLinks: true,
-    editLinkText: '帮助我完善此页面内容！',
+    editLinkText: '飞鸿踏雪泥',
     sidebarDepth: 1,
     displayAllHeaders: false, // 默认值：false 显示所有页面的标题链接 
     record: '皖ICP备20002272号',
     startYear: '2018',
-    author: '朽木丶', // 全局作者
+    author: 'Paradise', // 全局作者
     authorAvatar: '/image/avatar.jpg', // 首页头像
     type: 'blog',
   },
