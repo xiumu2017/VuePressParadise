@@ -1,3 +1,7 @@
+---
+publish: false
+---
+
 # VuePress + Github + Travis 搭建个人博客
 
 ## 简单介绍

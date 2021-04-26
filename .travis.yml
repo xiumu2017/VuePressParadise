@@ -8,5 +8,5 @@ branches:
   only:
     - master
 notifications:
-  webhooks: https://oapi.dingtalk.com/robot/send?access_token=76090c986c3298adec4b4be419cfd0c8731e4ec0825ea822942663d90bb10c53
+  webhooks: https://oapi.dingtalk.com/robot/send?access_token=c29c29876c8c0b7950babc63b0f09bb92edd7b30c4f4bec2d427a8f5d9116e9a
   email: false
